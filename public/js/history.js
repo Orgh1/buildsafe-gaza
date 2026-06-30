@@ -5,10 +5,11 @@
   BSG.ui.initConnectivity();
   BSG.ui.registerSW();
 
+  const T = BSG.i18n.t;
   // severity filter options
   const sevSel = document.getElementById('severity');
-  sevSel.innerHTML = '<option value="">All severities</option>' +
-    BSG.enums.SEVERITY_LEVELS.map((s) => `<option value="${s}">${s}</option>`).join('');
+  sevSel.innerHTML = `<option value="">${T('All severities')}</option>` +
+    BSG.enums.SEVERITY_LEVELS.map((s) => `<option value="${s}">${T(s)}</option>`).join('');
 
   let all = [];
   let pending = [];
@@ -59,32 +60,32 @@
       html += `<tr class="table-warning">
         <td><i class="bi bi-cloud-arrow-up"></i></td>
         <td>${BSG.ui.escape(f.building_location)}</td>
-        <td>${BSG.ui.escape(f.building_type || '—')}</td>
+        <td>${BSG.ui.escape(f.building_type ? T(f.building_type) : '—')}</td>
         <td>${BSG.ui.severityBadge(f.severity)}</td>
-        <td><span class="badge bg-warning text-dark">pending sync</span></td>
+        <td><span class="badge bg-warning text-dark">${T('pending sync')}</span></td>
         <td>${(p.media || []).length}</td>
         <td class="small text-muted">${BSG.ui.fmtDate(p.queued_at)}</td>
-        <td><span class="text-muted small">on device</span></td>
+        <td><span class="text-muted small">${T('on device')}</span></td>
       </tr>`;
     }
 
     if (!rows.length && !pending.length) {
-      body.innerHTML = '<tr><td colspan="8" class="text-center text-muted py-4">No assessments found.</td></tr>';
+      body.innerHTML = `<tr><td colspan="8" class="text-center text-muted py-4">${T('No assessments found.')}</td></tr>`;
     } else {
       html += rows.map((a) => `<tr>
         <td>#${a.id}</td>
         <td>${BSG.ui.escape(a.building_location)}</td>
-        <td>${BSG.ui.escape(a.building_type || '—')}</td>
+        <td>${BSG.ui.escape(a.building_type ? T(a.building_type) : '—')}</td>
         <td>${BSG.ui.severityBadge(a.severity)}</td>
-        <td><span class="badge bg-light text-dark text-capitalize">${BSG.ui.escape(a.status)}</span></td>
+        <td><span class="badge bg-light text-dark">${BSG.ui.escape(T(a.status))}</span></td>
         <td>${a.media_count != null ? a.media_count : '—'}</td>
         <td class="small text-muted">${BSG.ui.fmtDate(a.created_at)}</td>
-        <td><a href="/view.html?id=${a.id}" class="btn btn-sm btn-outline-bsg">View</a></td>
+        <td><a href="/view.html?id=${a.id}" class="btn btn-sm btn-outline-bsg">${T('View')}</a></td>
       </tr>`).join('');
       body.innerHTML = html;
     }
     document.getElementById('count-label').textContent =
-      `${rows.length} assessment(s)${pending.length ? ` · ${pending.length} pending sync` : ''}`;
+      `${T('{n} assessment(s)', { n: rows.length })}${pending.length ? ` · ${T('{n} pending sync', { n: pending.length })}` : ''}`;
   }
 
   ['q', 'severity', 'status', 'sort'].forEach((id) =>

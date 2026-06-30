@@ -13,11 +13,13 @@ window.BSG.ui = (function () {
     if (!s) return '—';
     const d = new Date(s.includes('T') ? s : s.replace(' ', 'T') + 'Z');
     if (isNaN(d)) return s;
-    return d.toLocaleString(undefined, { year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
+    // Always use Latin (Western) digits, regardless of UI language.
+    return d.toLocaleString('en-GB', { year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
   }
 
   function severityBadge(sev) {
-    return `<span class="badge sev sev-${escape(sev)}">${escape(sev || 'N/A')}</span>`;
+    const label = window.BSG.i18n ? BSG.i18n.t(sev || 'N/A') : (sev || 'N/A');
+    return `<span class="badge sev sev-${escape(sev)}">${escape(label)}</span>`;
   }
 
   function toast(msg, type = 'success') {
@@ -60,7 +62,8 @@ window.BSG.ui = (function () {
   }
 
   function navLink(href, label, key, active) {
-    return `<li class="nav-item"><a class="nav-link ${active === key ? 'active' : ''}" href="${href}">${label}</a></li>`;
+    const text = window.BSG.i18n ? BSG.i18n.t(label) : label;
+    return `<li class="nav-item"><a class="nav-link ${active === key ? 'active' : ''}" href="${href}">${text}</a></li>`;
   }
 
   function renderNav(active) {
@@ -74,22 +77,24 @@ window.BSG.ui = (function () {
       links += navLink('/history.html', 'History', 'history', active);
       links += navLink('/contact.html', 'Contact', 'contact', active);
       right = `
+        ${BSG.i18n.switcherHTML()}
         <span id="net-indicator" class="text-white"></span>
         <div class="dropdown">
           <a class="btn btn-sm btn-light dropdown-toggle" data-bs-toggle="dropdown" href="#">
             <i class="bi bi-person-circle"></i> ${escape(user.full_name.split(' ')[0])}
           </a>
           <ul class="dropdown-menu dropdown-menu-end">
-            <li><a class="dropdown-item" href="/profile.html"><i class="bi bi-gear"></i> Profile</a></li>
+            <li><a class="dropdown-item" href="/profile.html"><i class="bi bi-gear"></i> ${BSG.i18n.t('Profile')}</a></li>
             <li><hr class="dropdown-divider"></li>
-            <li><a class="dropdown-item" href="#" id="logout-btn"><i class="bi bi-box-arrow-right"></i> Log out</a></li>
+            <li><a class="dropdown-item" href="#" id="logout-btn"><i class="bi bi-box-arrow-right"></i> ${BSG.i18n.t('Log out')}</a></li>
           </ul>
         </div>`;
     } else {
       links += navLink('/', 'Home', 'home', active);
       links += navLink('/contact.html', 'Contact', 'contact', active);
-      right = `<a class="btn btn-sm btn-light me-2" href="/login.html">Log in</a>
-               <a class="btn btn-sm btn-outline-light" href="/register.html">Register</a>`;
+      right = `${BSG.i18n.switcherHTML()}
+               <a class="btn btn-sm btn-light me-2" href="/login.html">${BSG.i18n.t('Log in')}</a>
+               <a class="btn btn-sm btn-outline-light" href="/register.html">${BSG.i18n.t('Register')}</a>`;
     }
 
     host.innerHTML = `
@@ -110,6 +115,7 @@ window.BSG.ui = (function () {
 
     const lo = document.getElementById('logout-btn');
     if (lo) lo.addEventListener('click', (e) => { e.preventDefault(); logout(); });
+    if (window.BSG.i18n) { BSG.i18n.bindSwitcher(); BSG.i18n.apply(); }
     updateNetIndicator();
   }
 
@@ -119,22 +125,24 @@ window.BSG.ui = (function () {
     const online = navigator.onLine;
     let pending = 0;
     try { pending = await BSG.idb.countPending(); } catch (_) {}
-    const dot = online ? '<span class="dot dot-online"></span>Online' : '<span class="dot dot-offline"></span>Offline';
-    const badge = pending > 0 ? ` <span class="badge bg-warning text-dark pending-badge">${pending} pending</span>` : '';
+    const T = (s) => (window.BSG.i18n ? BSG.i18n.t(s) : s);
+    const dot = online ? `<span class="dot dot-online"></span>${T('Online')}` : `<span class="dot dot-offline"></span>${T('Offline')}`;
+    const badge = pending > 0 ? ` <span class="badge bg-warning text-dark pending-badge">${pending} ${T('pending')}</span>` : '';
     el.innerHTML = `<span id="net-indicator-inner">${dot}${badge}</span>`;
   }
 
   function initConnectivity() {
+    const T = (s, v) => (window.BSG.i18n ? BSG.i18n.t(s, v) : s);
     window.addEventListener('online', async () => {
-      toast('Back online — synchronizing…', 'info');
+      toast(T('Back online — synchronizing…'), 'info');
       await updateNetIndicator();
       if (window.BSG.sync) {
         const r = await BSG.sync.run();
-        if (r && r.synced > 0) toast(`Synced ${r.synced} offline record(s).`, 'success');
+        if (r && r.synced > 0) toast(T('Synced {n} offline record(s).', { n: r.synced }), 'success');
       }
       await updateNetIndicator();
     });
-    window.addEventListener('offline', () => { toast('You are offline — data will be saved on this device.', 'warning'); updateNetIndicator(); });
+    window.addEventListener('offline', () => { toast(T('You are offline — data will be saved on this device.'), 'warning'); updateNetIndicator(); });
   }
 
   function registerSW() {

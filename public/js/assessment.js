@@ -8,12 +8,13 @@
   const params = new URLSearchParams(location.search);
   const editId = params.get('id');
   const E = BSG.enums;
+  const T = BSG.i18n.t;
 
-  // Populate selects
+  // Populate selects (stored value stays English; only the label is translated)
   function fillSelect(id, options, allowEmpty) {
     const sel = document.getElementById(id);
-    sel.innerHTML = (allowEmpty ? '<option value="">— select —</option>' : '') +
-      options.map((o) => `<option value="${o}">${o}</option>`).join('');
+    sel.innerHTML = (allowEmpty ? `<option value="">${T('— select —')}</option>` : '') +
+      options.map((o) => `<option value="${o}">${T(o)}</option>`).join('');
   }
   fillSelect('building_type', E.BUILDING_TYPES, true);
   fillSelect('damage_type', E.DAMAGE_TYPES, true);
@@ -28,14 +29,14 @@
 
   // Geolocation
   document.getElementById('geo-btn').addEventListener('click', () => {
-    if (!navigator.geolocation) return BSG.ui.toast('Geolocation not supported.', 'warning');
+    if (!navigator.geolocation) return BSG.ui.toast(T('Geolocation not supported.'), 'warning');
     navigator.geolocation.getCurrentPosition(
       (pos) => {
         document.getElementById('latitude').value = pos.coords.latitude.toFixed(6);
         document.getElementById('longitude').value = pos.coords.longitude.toFixed(6);
-        BSG.ui.toast('Location captured.', 'success');
+        BSG.ui.toast(T('Location captured.'), 'success');
       },
-      () => BSG.ui.toast('Could not get location.', 'warning')
+      () => BSG.ui.toast(T('Could not get location.'), 'warning')
     );
   });
 
@@ -71,21 +72,21 @@
 
   // ----- Edit mode: load existing assessment -----
   if (editId) {
-    document.getElementById('form-title').innerHTML = '<i class="bi bi-pencil-square text-bsg"></i> Edit Assessment';
-    document.getElementById('form-sub').textContent = `Editing assessment #${editId}`;
+    document.getElementById('form-title').innerHTML = `<i class="bi bi-pencil-square text-bsg"></i> ${T('Edit Assessment')}`;
+    document.getElementById('form-sub').textContent = T('Editing assessment #{id}', { id: editId });
     try {
       const { assessment } = await BSG.api.get(`/api/assessments/${editId}`);
       for (const f of fields) if (assessment[f] != null) document.getElementById(f).value = assessment[f];
       renderExistingMedia(assessment.media || []);
     } catch (ex) {
-      BSG.ui.toast('Could not load assessment: ' + ex.message, 'danger');
+      BSG.ui.toast(T('Could not load assessment:') + ' ' + ex.message, 'danger');
     }
   }
 
   function renderExistingMedia(media) {
     const host = document.getElementById('existing-media');
     if (!media.length) { host.innerHTML = ''; return; }
-    host.innerHTML = '<div class="col-12 small text-muted mt-2">Existing media:</div>' + media.map((m) => `
+    host.innerHTML = `<div class="col-12 small text-muted mt-2">${T('Existing media:')}</div>` + media.map((m) => `
       <div class="col-4 col-md-3 media-tile" data-id="${m.id}">
         ${m.kind === 'image'
           ? `<img src="/api/media/${m.id}" class="media-thumb">`
@@ -93,11 +94,11 @@
         <button type="button" class="btn btn-danger btn-sm btn-del" data-del="${m.id}"><i class="bi bi-x"></i></button>
       </div>`).join('');
     host.querySelectorAll('[data-del]').forEach((b) => b.addEventListener('click', async () => {
-      if (!confirm('Delete this media file?')) return;
+      if (!confirm(T('Delete this media file?'))) return;
       try {
         await BSG.api.del(`/api/media/${b.dataset.del}`);
         b.closest('.media-tile').remove();
-        BSG.ui.toast('Media deleted.', 'success');
+        BSG.ui.toast(T('Media deleted.'), 'success');
       } catch (ex) { BSG.ui.toast(ex.message, 'danger'); }
     }));
   }
@@ -112,11 +113,11 @@
     err.classList.add('d-none');
     const data = collect();
     if (!data.building_location || !data.severity) {
-      err.textContent = 'Building location and severity are required.';
+      err.textContent = T('Building location and severity are required.');
       err.classList.remove('d-none');
       return;
     }
-    btn.disabled = true; btn.innerHTML = 'Saving…';
+    btn.disabled = true; btn.innerHTML = T('Saving…');
     const files = [...mediaInput.files];
 
     try {
@@ -128,7 +129,7 @@
           files.forEach((f) => fd.append('files', f));
           await BSG.api.upload(`/api/assessments/${editId}/media`, fd);
         }
-        BSG.ui.toast('Assessment updated.', 'success');
+        BSG.ui.toast(T('Assessment updated.'), 'success');
         location.href = `/view.html?id=${editId}`;
         return;
       }
@@ -141,24 +142,24 @@
           files.forEach((f) => fd.append('files', f));
           await BSG.api.upload(`/api/assessments/${assessment.id}/media`, fd);
         }
-        BSG.ui.toast('Assessment saved.', 'success');
+        BSG.ui.toast(T('Assessment saved.'), 'success');
         location.href = `/view.html?id=${assessment.id}`;
       } else {
         // Offline create — queue in IndexedDB
         await BSG.sync.queueAssessment(data, files);
-        BSG.ui.toast('Saved offline. It will sync automatically when you reconnect.', 'warning');
+        BSG.ui.toast(T('Saved offline. It will sync automatically when you reconnect.'), 'warning');
         location.href = '/dashboard.html';
       }
     } catch (ex) {
       if (!editId && !navigator.onLine) {
         // Network died mid-request — fall back to offline queue
         await BSG.sync.queueAssessment(data, files);
-        BSG.ui.toast('Network unavailable — saved offline.', 'warning');
+        BSG.ui.toast(T('Network unavailable — saved offline.'), 'warning');
         location.href = '/dashboard.html';
         return;
       }
       err.textContent = ex.message; err.classList.remove('d-none');
-      btn.disabled = false; btn.innerHTML = '<i class="bi bi-save"></i> Save Assessment';
+      btn.disabled = false; btn.innerHTML = `<i class="bi bi-save"></i> ${T('Save Assessment')}`;
     }
   });
 })();

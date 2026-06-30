@@ -8,7 +8,7 @@
   <meta name="theme-color" content="#0f766e">
   <link rel="manifest" href="/manifest.webmanifest">
   <link rel="icon" href="/img/icon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="/vendor/bootstrap/bootstrap.min.css">
+  <script>(function(){var ar=localStorage.getItem('bsg_lang')==='ar';var d=document.documentElement;d.lang=ar?'ar':'en';d.dir=ar?'rtl':'ltr';document.write('<link rel="stylesheet" href="/vendor/bootstrap/bootstrap'+(ar?'.rtl':'')+'.min.css">');})();</script>
   <link rel="stylesheet" href="/vendor/icons/bootstrap-icons.min.css">
   <link rel="stylesheet" href="/css/style.css">
 </head>
@@ -19,7 +19,7 @@
   <header class="hero">
     <div class="container text-center">
       <h1 class="display-4 mb-3">Building Damage Assessment Platform</h1>
-      <p class="lead mb-4 mx-auto" style="max-width:720px">
+      <p class="lead mb-4 mx-auto" style="max-width:720px" data-i18n-html="hero.lead">
         A digital, standardized solution that helps field engineers assess partially damaged buildings in Gaza,
         document damage with photos and video, and generate structured reports — even without an internet connection.
       </p>
@@ -33,7 +33,7 @@
     <div class="row g-4 align-items-center">
       <div class="col-lg-6">
         <h2 class="text-bsg fw-bold">Why this platform?</h2>
-        <p class="text-muted">After the 2023 destruction in Gaza, thousands of buildings need evaluation. Today these
+        <p class="text-muted" data-i18n-html="why.body">After the 2023 destruction in Gaza, thousands of buildings need evaluation. Today these
           assessments are done manually, are not standardized, and are hard to document and share.</p>
         <ul class="list-unstyled">
           <li class="mb-2"><i class="bi bi-check-circle-fill text-bsg"></i> Replaces slow, paper-based methods</li>
@@ -93,6 +93,7 @@
 
   <script src="/vendor/bootstrap/bootstrap.bundle.min.js"></script>
   <script src="/js/config.js"></script>
+  <script src="/js/i18n.js"></script>
   <script src="/js/api.js"></script>
   <script src="/js/idb.js"></script>
   <script src="/js/ui.js"></script>

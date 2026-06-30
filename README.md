@@ -70,7 +70,7 @@ Open **http://localhost:3000**.
 ### Demo accounts
 | Role | Email | Password |
 |------|-------|----------|
-| Engineer | `mahmoud@buildsafe.ps` | `Engineer@123` |
+| Engineer | `osama@buildsafe.ps` | `Engineer@123` |
 | Admin | `admin@buildsafe.ps` | `Admin@123` |
 
 ### Scripts

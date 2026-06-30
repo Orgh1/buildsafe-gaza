@@ -22,7 +22,7 @@ npm start        # http://localhost:3000
 - Talking point: *"This replaces slow, paper-based, non-standardized assessments."*
 
 ## 2. Login (30s) — **TC1**
-- Click **Log in** → use `mahmoud@buildsafe.ps` / `Engineer@123`.
+- Click **Log in** → use `osama@buildsafe.ps` / `Engineer@123`.
 - Land on the **Dashboard**: stat cards (total assessments, severe/critical, media), recent list.
 - Talking point: *"Auth uses bcrypt password hashing and a JWT in an httpOnly cookie."*
 

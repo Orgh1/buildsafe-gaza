@@ -7,7 +7,7 @@
   <meta name="theme-color" content="#0f766e">
   <link rel="manifest" href="/manifest.webmanifest">
   <link rel="icon" href="/img/icon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="/vendor/bootstrap/bootstrap.min.css">
+  <script>(function(){var ar=localStorage.getItem('bsg_lang')==='ar';var d=document.documentElement;d.lang=ar?'ar':'en';d.dir=ar?'rtl':'ltr';document.write('<link rel="stylesheet" href="/vendor/bootstrap/bootstrap'+(ar?'.rtl':'')+'.min.css">');})();</script>
   <link rel="stylesheet" href="/vendor/icons/bootstrap-icons.min.css">
   <link rel="stylesheet" href="/css/style.css">
 </head>
@@ -35,7 +35,7 @@
       <p class="text-center text-muted small mt-3 mb-0">No account? <a href="/register.html" class="text-bsg">Register</a></p>
       <div class="alert alert-light border mt-3 small mb-0">
         <strong>Demo accounts</strong><br>
-        Engineer: <code>mahmoud@buildsafe.ps</code> / <code>Engineer@123</code><br>
+        Engineer: <code>osama@buildsafe.ps</code> / <code>Engineer@123</code><br>
         Admin: <code>admin@buildsafe.ps</code> / <code>Admin@123</code>
       </div>
     </div>
@@ -43,6 +43,7 @@
 
   <script src="/vendor/bootstrap/bootstrap.bundle.min.js"></script>
   <script src="/js/config.js"></script>
+  <script src="/js/i18n.js"></script>
   <script src="/js/api.js"></script>
   <script src="/js/idb.js"></script>
   <script src="/js/ui.js"></script>
@@ -60,7 +61,7 @@
       form.addEventListener('submit', async (e) => {
         e.preventDefault();
         err.classList.add('d-none');
-        btn.disabled = true; btn.textContent = 'Logging in…';
+        btn.disabled = true; btn.textContent = BSG.i18n.t('Logging in…');
         try {
           await BSG.api.post('/api/auth/login', {
             email: document.getElementById('email').value.trim(),
@@ -69,7 +70,7 @@
           location.href = next;
         } catch (ex) {
           err.textContent = ex.message; err.classList.remove('d-none');
-          btn.disabled = false; btn.textContent = 'Log in';
+          btn.disabled = false; btn.textContent = BSG.i18n.t('Log in');
         }
       });
     })();

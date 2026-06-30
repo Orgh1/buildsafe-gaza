@@ -4,8 +4,10 @@ const bcrypt = require('bcryptjs');
 const db = require('./index');
 
 const engineers = [
-  { full_name: 'Osama Al-Ghazali', email: 'admin@buildsafe.ps', phone: '+970590000001', password: 'Admin@123', role: 'admin' },
-  { full_name: 'Mahmoud Irheem', email: 'mahmoud@buildsafe.ps', phone: '+970590000002', password: 'Engineer@123', role: 'engineer' },
+  // Primary demo account (field engineer) — owns the sample assessments
+  { full_name: 'Osama Al-Ghazali', email: 'osama@buildsafe.ps', phone: '+970590000001', password: 'Engineer@123', role: 'engineer' },
+  // Admin account (for the system-wide statistics view)
+  { full_name: 'Mahmoud Irheem', email: 'admin@buildsafe.ps', phone: '+970590000002', password: 'Admin@123', role: 'admin' },
 ];
 
 const upsertEngineer = db.prepare(
@@ -61,14 +63,14 @@ function run() {
       role: e.role,
     });
   }
-  const mahmoud = findEngineer.get('mahmoud@buildsafe.ps');
+  const osama = findEngineer.get('osama@buildsafe.ps');
   for (const a of sampleAssessments) {
-    insertAssessment.run({ ...a, engineer_id: mahmoud.id });
+    insertAssessment.run({ ...a, engineer_id: osama.id });
   }
 
   console.log('Seed complete.');
+  console.log('  Engineer -> osama@buildsafe.ps / Engineer@123  (primary demo)');
   console.log('  Admin    -> admin@buildsafe.ps / Admin@123');
-  console.log('  Engineer -> mahmoud@buildsafe.ps / Engineer@123');
 }
 
 run();
