@@ -5,7 +5,7 @@ window.BSG = window.BSG || {};
 
 window.BSG.idb = (function () {
   const DB_NAME = 'buildsafe-gaza';
-  const DB_VERSION = 1;
+  const DB_VERSION = 2;
   let dbPromise = null;
 
   function open() {
@@ -19,6 +19,9 @@ window.BSG.idb = (function () {
         }
         if (!db.objectStoreNames.contains('cache')) {
           db.createObjectStore('cache', { keyPath: 'id' });
+        }
+        if (!db.objectStoreNames.contains('details')) {
+          db.createObjectStore('details', { keyPath: 'id' });
         }
       };
       r.onsuccess = () => resolve(r.result);
@@ -58,5 +61,14 @@ window.BSG.idb = (function () {
   }
   function getCache() { return tx('cache', 'readonly', (s) => ({ __req: s.getAll() })); }
 
-  return { putPending, deletePending, getAllPending, getPending, countPending, putCache, getCache };
+  // --- details (full assessment+report data, cached for offline reports/view) ---
+  function putDetail(id, data) {
+    return tx('details', 'readwrite', (s) => ({ __req: s.put({ id: Number(id), data }) }));
+  }
+  async function getDetail(id) {
+    const row = await tx('details', 'readonly', (s) => ({ __req: s.get(Number(id)) }));
+    return row ? row.data : null;
+  }
+
+  return { putPending, deletePending, getAllPending, getPending, countPending, putCache, getCache, putDetail, getDetail };
 })();

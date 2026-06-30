@@ -24,8 +24,21 @@
     return `<div class="col-md-6 rep-field"><div class="rep-label">${esc(label)}</div><div class="rep-value">${esc(value)}</div></div>`;
   }
 
+  // Fetch from server when online (and cache for offline); fall back to cache when offline.
+  let a;
   try {
-    const { report: a } = await BSG.api.get(`/api/assessments/${id}/report`);
+    const res = await BSG.api.get(`/api/assessments/${id}/report`);
+    a = res.report;
+    try { await BSG.idb.putDetail(id, a); } catch (_) {}
+  } catch (_) {
+    try { a = await BSG.idb.getDetail(id); } catch (_) {}
+  }
+  if (!a) {
+    sheet.innerHTML = `<div class="p-4"><div class="alert alert-warning mb-0"><i class="bi bi-wifi-off"></i> ${T('Could not load assessment:')} (${T('Offline')})</div></div>`;
+    return;
+  }
+
+  try {
     const media = a.media || [];
     const images = media.filter((m) => m.kind === 'image');
     const videoCount = media.filter((m) => m.kind === 'video').length;

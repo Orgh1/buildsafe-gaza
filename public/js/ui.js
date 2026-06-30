@@ -40,21 +40,27 @@ window.BSG.ui = (function () {
       const r = await BSG.api.get('/api/auth/me');
       user = r.user;
       try { localStorage.setItem('bsg_user', JSON.stringify(user)); } catch (_) {}
-    } catch (_) { user = null; }
-    return user;
+      return user;
+    } catch (err) {
+      user = null;
+      // A network failure (no HTTP status) means we're offline — keep the
+      // session cached from a previous online visit so offline work continues.
+      if (!err || err.status == null) {
+        try {
+          const cached = localStorage.getItem('bsg_user');
+          if (cached) user = JSON.parse(cached);
+        } catch (_) {}
+      } else if (err.status === 401) {
+        // Genuinely signed out by the server — clear the cached session.
+        try { localStorage.removeItem('bsg_user'); } catch (_) {}
+      }
+      return user;
+    }
   }
 
   async function guard() {
     await loadUser();
     if (!user) {
-      // Offline-first: if we can't reach the server but a session was cached
-      // from a previous online visit, keep the user in so offline work continues.
-      if (!navigator.onLine) {
-        try {
-          const cached = localStorage.getItem('bsg_user');
-          if (cached) { user = JSON.parse(cached); return user; }
-        } catch (_) {}
-      }
       const next = encodeURIComponent(location.pathname + location.search);
       location.replace(`/login.html?next=${next}`);
       return null;

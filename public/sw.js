@@ -2,7 +2,7 @@
    Strategy: network-first (always serve the latest when online), fall back to
    cache when offline. Keeps the app fully usable offline without ever serving
    a stale page while connected. */
-const VERSION = 'bsg-v4';
+const VERSION = 'bsg-v5';
 
 const APP_SHELL = [
   '/', '/index.html', '/login.html', '/register.html', '/dashboard.html',
@@ -39,7 +39,8 @@ self.addEventListener('fetch', (event) => {
 
   const url = new URL(req.url);
   if (url.origin !== self.location.origin) return; // ignore cross-origin
-  if (url.pathname.startsWith('/api/')) return;     // API is always network (offline data lives in IndexedDB)
+  // API is network-only — EXCEPT media files, which we cache so photos show offline.
+  if (url.pathname.startsWith('/api/') && !url.pathname.startsWith('/api/media/')) return;
 
   // Network-first: latest content when online, cached copy when offline.
   event.respondWith((async () => {

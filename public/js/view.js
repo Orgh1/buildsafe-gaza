@@ -17,8 +17,21 @@
   // enum-aware value: translate known enum values, pass others through
   const TV = (v) => (v != null && v !== '' ? T(String(v)) : v);
 
+  // Online: fetch + cache for offline. Offline: fall back to the cached copy.
+  let a;
   try {
-    const { report: a } = await BSG.api.get(`/api/assessments/${id}/report`);
+    const res = await BSG.api.get(`/api/assessments/${id}/report`);
+    a = res.report;
+    try { await BSG.idb.putDetail(id, a); } catch (_) {}
+  } catch (_) {
+    try { a = await BSG.idb.getDetail(id); } catch (_) {}
+  }
+  if (!a) {
+    content.innerHTML = `<div class="alert alert-warning"><i class="bi bi-wifi-off"></i> ${T('Could not load assessment:')} (${T('Offline')})</div>`;
+    return;
+  }
+
+  try {
     const media = a.media || [];
     const images = media.filter((m) => m.kind === 'image');
     const videos = media.filter((m) => m.kind === 'video');
