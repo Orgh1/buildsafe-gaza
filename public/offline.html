@@ -4,7 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Offline — BuildSafe Gaza</title>
-  <script>(function(){var ar=localStorage.getItem('bsg_lang')==='ar';var d=document.documentElement;d.lang=ar?'ar':'en';d.dir=ar?'rtl':'ltr';document.write('<link rel="stylesheet" href="/vendor/bootstrap/bootstrap'+(ar?'.rtl':'')+'.min.css">');})();</script>
+  <link rel="stylesheet" id="bs-css" href="/vendor/bootstrap/bootstrap.min.css">
+  <script>(function(){try{var ar=localStorage.getItem('bsg_lang')==='ar';var e=document.documentElement;e.lang=ar?'ar':'en';e.dir=ar?'rtl':'ltr';if(ar){var l=document.getElementById('bs-css');if(l)l.href='/vendor/bootstrap/bootstrap.rtl.min.css';}}catch(_){}})();</script>
   <link rel="stylesheet" href="/vendor/icons/bootstrap-icons.min.css">
   <link rel="stylesheet" href="/css/style.css">
 </head>

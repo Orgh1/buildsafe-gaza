@@ -1,5 +1,8 @@
-/* BuildSafe Gaza — service worker (app-shell precache + offline fallback) */
-const VERSION = 'bsg-v2';
+/* BuildSafe Gaza — service worker
+   Strategy: network-first (always serve the latest when online), fall back to
+   cache when offline. Keeps the app fully usable offline without ever serving
+   a stale page while connected. */
+const VERSION = 'bsg-v3';
 
 const APP_SHELL = [
   '/', '/index.html', '/login.html', '/register.html', '/dashboard.html',
@@ -36,32 +39,22 @@ self.addEventListener('fetch', (event) => {
 
   const url = new URL(req.url);
   if (url.origin !== self.location.origin) return; // ignore cross-origin
-  if (url.pathname.startsWith('/api/')) return;     // API is network-only; offline data lives in IndexedDB
+  if (url.pathname.startsWith('/api/')) return;     // API is always network (offline data lives in IndexedDB)
 
-  // Navigation requests: cache-first for the app shell, fall back to network, then offline page
-  if (req.mode === 'navigate') {
-    event.respondWith(
-      caches.match(req).then((cached) =>
-        cached || fetch(req).then((res) => {
-          const copy = res.clone();
-          caches.open(VERSION).then((c) => c.put(req, copy));
-          return res;
-        }).catch(() => caches.match('/offline.html'))
-      )
-    );
-    return;
-  }
-
-  // Static assets: cache-first, then network (and cache the result)
-  event.respondWith(
-    caches.match(req).then((cached) =>
-      cached || fetch(req).then((res) => {
-        if (res && res.ok && res.type === 'basic') {
-          const copy = res.clone();
-          caches.open(VERSION).then((c) => c.put(req, copy));
-        }
-        return res;
-      }).catch(() => cached)
-    )
-  );
+  // Network-first: latest content when online, cached copy when offline.
+  event.respondWith((async () => {
+    try {
+      const res = await fetch(req);
+      if (res && res.ok && res.type === 'basic') {
+        const copy = res.clone();
+        caches.open(VERSION).then((c) => c.put(req, copy));
+      }
+      return res;
+    } catch (err) {
+      const cached = await caches.match(req);
+      if (cached) return cached;
+      if (req.mode === 'navigate') return caches.match('/offline.html');
+      throw err;
+    }
+  })());
 });

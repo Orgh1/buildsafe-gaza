@@ -53,7 +53,7 @@ const insertAssessment = db.prepare(
    ON CONFLICT(client_uuid) DO NOTHING`
 );
 
-function run() {
+function seed() {
   for (const e of engineers) {
     upsertEngineer.run({
       full_name: e.full_name,
@@ -73,4 +73,7 @@ function run() {
   console.log('  Admin    -> admin@buildsafe.ps / Admin@123');
 }
 
-run();
+module.exports = { seed };
+
+// Run directly via `npm run seed`
+if (require.main === module) seed();

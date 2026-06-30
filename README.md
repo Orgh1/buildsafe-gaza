@@ -61,11 +61,19 @@ device and synchronized automatically when connectivity returns.
 ```bash
 cd buildsafe-gaza
 npm install
-npm run seed     # creates demo accounts + sample assessments
-npm start        # http://localhost:3000
+npm start        # http://localhost:3000  (auto-seeds demo data on first run)
 ```
 
-Open **http://localhost:3000**.
+Open **http://localhost:3000**. The database auto-seeds demo accounts + sample
+assessments on first boot, so `npm start` is all you need. (You can still run
+`npm run seed` manually to re-seed.)
+
+### Deploy to Render (durable public link)
+1. Push this repo to GitHub.
+2. On [render.com](https://render.com): **New + → Blueprint**, select the repo (it reads `render.yaml`).
+3. Render builds and gives a permanent `https://<name>.onrender.com` URL — works without your machine.
+
+> The app reads Render's `PORT` env var and auto-seeds demo data on first boot.
 
 ### Demo accounts
 | Role | Email | Password |

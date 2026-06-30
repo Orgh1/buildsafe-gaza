@@ -1,0 +1,21 @@
+# Render.com deployment (one-click via "New + → Blueprint" pointing at this repo).
+# The app reads the PORT env var (Render provides it) and auto-seeds demo data
+# on first boot. SQLite + uploads live on the instance disk.
+services:
+  - type: web
+    name: buildsafe-gaza
+    runtime: node
+    plan: free
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: NODE_VERSION
+        value: "22"
+      - key: JWT_SECRET
+        generateValue: true
+    # Free tier uses ephemeral storage (data resets on redeploy; auto-seed re-creates demo data).
+    # For persistent data, upgrade the plan and attach a disk mounted at ./data:
+    # disk:
+    #   name: buildsafe-data
+    #   mountPath: /opt/render/project/src/data
+    #   sizeGB: 1
