@@ -1,0 +1,25 @@
+sequenceDiagram
+  actor Eng as Field Engineer
+  participant UI as PWA (Browser)
+  participant IDB as IndexedDB
+  participant SW as Service Worker
+  participant API as Express API
+  participant DB as SQLite + Files
+
+  Note over Eng,SW: 🚫 No internet connection
+  Eng->>UI: Fill assessment form + add photos
+  UI->>UI: navigator.onLine == false
+  UI->>IDB: Save pending record (client_uuid + base64 media)
+  IDB-->>UI: stored
+  UI-->>Eng: "Saved offline — will sync later"
+
+  Note over Eng,DB: 📶 Connectivity restored
+  UI->>UI: 'online' event fires
+  UI->>IDB: Read all pending records
+  IDB-->>UI: [pending...]
+  UI->>API: POST /api/sync { assessments + media }
+  API->>DB: Upsert by client_uuid (+ save media files)
+  DB-->>API: created / updated ids
+  API-->>UI: results [{client_uuid, server_id, status}]
+  UI->>IDB: Delete successfully synced records
+  UI-->>Eng: "Synced N record(s)"

@@ -1,0 +1,33 @@
+flowchart LR
+  ENG(["👷 Field Engineer"])
+  ADMIN(["🛡️ Admin / Humanitarian Org"])
+  VISITOR(["🌐 Visitor"])
+
+  subgraph SYS["BuildSafe Gaza Platform"]
+    U1(["Register / Login"])
+    U2(["Create / Edit Assessment"])
+    U3(["Document Damage & Severity"])
+    U4(["Upload Media"])
+    U5(["Generate PDF Report"])
+    U6(["View Assessment History"])
+    U7(["Work Offline"])
+    U8(["Synchronize Data"])
+    U9(["Manage Profile"])
+    U10(["View System Statistics"])
+    U11(["Submit Contact / Feedback"])
+  end
+
+  ENG --- U1
+  ENG --- U2
+  ENG --- U3
+  ENG --- U4
+  ENG --- U5
+  ENG --- U6
+  ENG --- U7
+  ENG --- U8
+  ENG --- U9
+  ADMIN --- U10
+  ADMIN --- U6
+  VISITOR --- U11
+  U2 -. include .-> U3
+  U7 -. extend .-> U8

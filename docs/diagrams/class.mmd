@@ -1,0 +1,59 @@
+classDiagram
+  class Engineer {
+    +int id
+    +string full_name
+    +string email
+    +string phone
+    -string password_hash
+    +string role
+    +register()
+    +login()
+    +updateProfile()
+    +changePassword()
+  }
+  class Assessment {
+    +int id
+    +string client_uuid
+    +int engineer_id
+    +string owner_name
+    +string building_location
+    +int num_floors
+    +string damage_type
+    +string severity
+    +string habitability
+    +string status
+    +string source
+    +create()
+    +update()
+    +delete()
+    +generateReport()
+  }
+  class Media {
+    +int id
+    +int assessment_id
+    +string filename
+    +string mime_type
+    +string kind
+    +int size
+  }
+  class Report {
+    +int assessmentId
+    +render()
+    +toPDF()
+  }
+  class Contact {
+    +int id
+    +string name
+    +string email
+    +string message
+  }
+  class ActivityLog {
+    +int id
+    +int engineer_id
+    +string action
+    +datetime created_at
+  }
+  Engineer "1" --> "0..*" Assessment : creates
+  Assessment "1" --> "0..*" Media : has
+  Assessment "1" ..> "1" Report : generates
+  Engineer "1" --> "0..*" ActivityLog : records

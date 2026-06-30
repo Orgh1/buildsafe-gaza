@@ -1,0 +1,27 @@
+flowchart TB
+  subgraph P["Presentation Layer — PWA (Browser / Mobile)"]
+    UI["HTML5 · CSS3 · Bootstrap 5 · JS<br/>Pages: Landing, Login, Dashboard,<br/>Assessment, View, History, Profile"]
+    SW["Service Worker<br/>(app-shell cache)"]
+    IDB[("IndexedDB<br/>offline queue + cache")]
+  end
+  subgraph A["Application Layer — Node.js + Express REST API"]
+    AUTH["Auth (JWT + bcrypt)"]
+    ASMT["Assessments / Media / Reports"]
+    SYNC["Sync Service"]
+    PDF["PDF Generator (PDFKit)"]
+  end
+  subgraph D["Data Layer"]
+    DB[("SQLite Database<br/>engineers · assessments · media<br/>contacts · activity_log")]
+    FS[("File Storage<br/>uploaded images / videos")]
+  end
+  UI <--> SW
+  UI <--> IDB
+  UI -->|"HTTPS JSON / multipart"| AUTH
+  UI --> ASMT
+  IDB -->|"on reconnect"| SYNC
+  AUTH --> DB
+  ASMT --> DB
+  ASMT --> FS
+  SYNC --> DB
+  SYNC --> FS
+  PDF --> FS

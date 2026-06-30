@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BuildSafe Gaza — Presentation</title>
+  <style>
+    :root { --teal:#0f766e; --teal-d:#0b5c55; --ink:#14302c; --muted:#5b6b69; }
+    * { box-sizing: border-box; }
+    html,body { margin:0; height:100%; font-family: system-ui,"Segoe UI",Roboto,sans-serif; background:#0b1f1d; color:#14302c; }
+    .deck { height:100vh; }
+    .slide {
+      display:none; height:100vh; padding:5vh 8vw; flex-direction:column; justify-content:center;
+      background:#f5f7f8; position:relative;
+    }
+    .slide.active { display:flex; animation: fade .35s ease; }
+    @keyframes fade { from{opacity:0; transform:translateY(8px)} to{opacity:1; transform:none} }
+    .slide h1 { font-size: clamp(1.8rem,4vw,3rem); color:var(--teal-d); margin:0 0 .5rem; }
+    .slide h2 { font-size: clamp(1.4rem,3vw,2.2rem); color:var(--teal); margin:0 0 1.2rem; border-bottom:3px solid #d7efec; padding-bottom:.5rem; }
+    .slide p, .slide li { font-size: clamp(1rem,1.7vw,1.35rem); line-height:1.5; color:var(--ink); }
+    .muted { color:var(--muted) !important; }
+    ul { margin:.3rem 0; } li { margin:.4rem 0; }
+    .title-slide { background:linear-gradient(135deg,var(--teal-d),#15b8a6); color:#fff; align-items:flex-start; }
+    .title-slide h1 { color:#fff; font-size: clamp(2.2rem,5vw,3.6rem); }
+    .title-slide .sub { font-size:clamp(1.1rem,2vw,1.6rem); opacity:.95; }
+    .badge { display:inline-block; background:#fff; color:var(--teal-d); border-radius:999px; padding:.2rem .8rem; font-weight:700; font-size:.9rem; }
+    .grid { display:grid; grid-template-columns:repeat(3,1fr); gap:1rem; }
+    .card { background:#fff; border-radius:14px; padding:1.1rem 1.2rem; box-shadow:0 4px 14px rgba(0,0,0,.06); }
+    .card h3 { margin:.2rem 0 .4rem; color:var(--teal); font-size:1.1rem; }
+    .card p { font-size:.95rem; margin:0; }
+    .ico { font-size:1.6rem; }
+    .tiers { display:flex; flex-direction:column; gap:.8rem; }
+    .tier { border-radius:14px; padding:1rem 1.4rem; color:#fff; }
+    .tier b { font-size:1.15rem; } .tier span { opacity:.92; }
+    .t1{background:#0ea5a0} .t2{background:#0f766e} .t3{background:#0b5c55}
+    .arrow { text-align:center; color:var(--teal); font-size:1.4rem; margin:-.3rem 0; }
+    .two { display:grid; grid-template-columns:1fr 1fr; gap:1.5rem; align-items:start; }
+    .pill { display:inline-block; background:#e6fffa; color:var(--teal-d); border:1px solid #b8ece6; border-radius:8px; padding:.25rem .6rem; margin:.2rem; font-size:.95rem; }
+    .flow { display:flex; flex-wrap:wrap; gap:.5rem; align-items:center; }
+    .step { background:#fff; border-left:4px solid var(--teal); border-radius:8px; padding:.5rem .8rem; box-shadow:0 2px 8px rgba(0,0,0,.05); font-size:.95rem; }
+    .sep { color:var(--teal); font-weight:800; }
+    table { border-collapse:collapse; width:100%; font-size:1rem; }
+    th,td { text-align:left; padding:.45rem .7rem; border-bottom:1px solid #e2e8e7; }
+    th { color:var(--teal-d); }
+    .ok { color:#16a34a; font-weight:700; }
+    .nav { position:fixed; bottom:14px; right:18px; z-index:10; color:#fff; background:rgba(15,118,110,.85); border-radius:999px; padding:.3rem .8rem; font-size:.85rem; }
+    .progress { position:fixed; top:0; left:0; height:4px; background:#15b8a6; z-index:11; transition:width .25s; }
+    .hintbar { position:fixed; bottom:14px; left:18px; z-index:10; color:#9fb4b1; font-size:.8rem; }
+    .big { font-size:clamp(1.3rem,2.4vw,1.9rem); }
+    .kpi { display:flex; gap:1.5rem; flex-wrap:wrap; }
+    .kpi div { background:#fff; border-radius:14px; padding:1rem 1.4rem; box-shadow:0 4px 14px rgba(0,0,0,.06); text-align:center; }
+    .kpi .n { font-size:2.2rem; font-weight:800; color:var(--teal); }
+    @media (max-width:700px){ .grid{grid-template-columns:1fr 1fr} .two{grid-template-columns:1fr} }
+  </style>
+</head>
+<body>
+  <div class="deck" id="deck">
+
+    <!-- 1 -->
+    <section class="slide title-slide active">
+      <span class="badge">Islamic University of Gaza · Software Engineering Project 2026</span>
+      <h1>BuildSafe Gaza</h1>
+      <p class="sub">Building Damage Assessment Platform — an offline-capable web app for field engineers assessing damaged buildings in Gaza (2023).</p>
+      <p class="sub" style="margin-top:2rem"><b>Team:</b> Mahmoud Irheem · Osama Al-Ghazali · Yasser Awda · Ahmed El-Naggar · Kerim Ebu Musameh</p>
+    </section>
+
+    <!-- 2 -->
+    <section class="slide">
+      <h2>The Problem</h2>
+      <p>After the 2023 destruction, <b>thousands of buildings</b> in Gaza need evaluation. Today, assessments are:</p>
+      <ul>
+        <li>📝 Done <b>manually</b> on paper — slow and error-prone</li>
+        <li>🔀 <b>Not standardized</b> — every engineer documents differently</li>
+        <li>📤 <b>Hard to document &amp; share</b> — no central record</li>
+        <li>📶 Difficult in areas with <b>limited / unstable internet</b></li>
+      </ul>
+      <p class="big" style="margin-top:1rem">There is no unified, digital system for building damage assessment.</p>
+    </section>
+
+    <!-- 3 -->
+    <section class="slide">
+      <h2>Our Solution</h2>
+      <p>A digital platform that lets field engineers:</p>
+      <ul>
+        <li>Enter building &amp; owner data and classify <b>damage type + severity</b></li>
+        <li>Attach <b>photos and videos</b> as evidence</li>
+        <li>Generate a <b>structured PDF report</b> in one click</li>
+        <li><b>Work offline</b> and sync automatically when back online</li>
+      </ul>
+      <p class="big" style="margin-top:1rem">Faster · standardized · reliable — even with no connectivity.</p>
+    </section>
+
+    <!-- 4 -->
+    <section class="slide">
+      <h2>Target Users</h2>
+      <div class="grid">
+        <div class="card"><div class="ico">👷</div><h3>Field Engineers</h3><p>Enter data, assess damage, upload media, generate reports — in the field.</p></div>
+        <div class="card"><div class="ico">🏢</div><h3>Humanitarian Orgs</h3><p>Collect reports, analyze conditions, prioritize emergency response.</p></div>
+        <div class="card"><div class="ico">🏛️</div><h3>Government Authorities</h3><p>Use structured records for reconstruction planning.</p></div>
+      </div>
+    </section>
+
+    <!-- 5 -->
+    <section class="slide">
+      <h2>Core Features</h2>
+      <div class="grid">
+        <div class="card"><div class="ico">📋</div><h3>Inspection Form</h3><p>Owner, building, damage, severity, habitability, GPS, notes.</p></div>
+        <div class="card"><div class="ico">📷</div><h3>Media Upload</h3><p>Multiple images &amp; videos per assessment, with previews.</p></div>
+        <div class="card"><div class="ico">📄</div><h3>PDF Reports</h3><p>Auto-generated structured report with embedded photos.</p></div>
+        <div class="card"><div class="ico">📶</div><h3>Offline Mode</h3><p>Capture assessments with no internet (IndexedDB).</p></div>
+        <div class="card"><div class="ico">🔄</div><h3>Auto-Sync</h3><p>Idempotent sync — no duplicates on reconnect.</p></div>
+        <div class="card"><div class="ico">📊</div><h3>Dashboard</h3><p>Stats, severity breakdown, search &amp; history.</p></div>
+      </div>
+    </section>
+
+    <!-- 6 -->
+    <section class="slide">
+      <h2>System Architecture — Three Tiers</h2>
+      <div class="tiers">
+        <div class="tier t1"><b>① Presentation Layer — PWA</b><br><span>HTML5 · CSS3 · Bootstrap 5 · JavaScript · Service Worker (app-shell cache) · IndexedDB (offline store)</span></div>
+        <div class="arrow">▼ &nbsp; HTTPS · JSON / multipart</div>
+        <div class="tier t2"><b>② Application Layer — Node.js + Express REST API</b><br><span>Auth (JWT + bcrypt) · Assessments · Media · Sync · PDF reports (PDFKit) · Stats</span></div>
+        <div class="arrow">▼ &nbsp; better-sqlite3</div>
+        <div class="tier t3"><b>③ Data Layer</b><br><span>SQLite relational DB (engineers · assessments · media · contacts · activity_log) + file storage for media</span></div>
+      </div>
+      <p class="muted" style="margin-top:1rem">Separation of concerns → maintainable, scalable, secure. (See <b>diagrams.html</b> for full UML.)</p>
+    </section>
+
+    <!-- 7 -->
+    <section class="slide">
+      <h2>Technology Stack</h2>
+      <div class="two">
+        <div>
+          <p><b>Frontend</b></p>
+          <span class="pill">HTML5</span><span class="pill">CSS3</span><span class="pill">Bootstrap 5</span><span class="pill">JavaScript</span><span class="pill">PWA / Service Worker</span><span class="pill">IndexedDB</span>
+          <p style="margin-top:1rem"><b>Backend</b></p>
+          <span class="pill">Node.js</span><span class="pill">Express</span><span class="pill">JWT</span><span class="pill">bcrypt</span><span class="pill">Multer</span><span class="pill">PDFKit</span>
+          <p style="margin-top:1rem"><b>Database</b></p>
+          <span class="pill">SQLite (better-sqlite3)</span>
+        </div>
+        <div>
+          <p><b>Tools &amp; Process</b></p>
+          <span class="pill">Git &amp; GitHub</span><span class="pill">Jira (Scrum)</span><span class="pill">Google Drive</span><span class="pill">draw.io / Mermaid</span>
+          <p style="margin-top:1rem"><b>Quality</b></p>
+          <span class="pill">node:test (13 tests)</span><span class="pill">Input validation</span><span class="pill">Security headers</span>
+          <p class="muted" style="margin-top:1.2rem">Note: proposal named ASP.NET Core + SQL Server; we use an equivalent Node + SQLite three-tier stack (course allows any feasible framework). Same architecture &amp; data model.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 8 -->
+    <section class="slide">
+      <h2>Data Model</h2>
+      <p><b>engineers</b> 1 ─⟨ <b>assessments</b> 1 ─⟨ <b>media</b> &nbsp;&nbsp;·&nbsp;&nbsp; <b>engineers</b> 1 ─⟨ <b>activity_log</b> &nbsp;&nbsp;·&nbsp;&nbsp; <b>contacts</b></p>
+      <ul>
+        <li><b>engineers</b> — id, full_name, email, phone, password_hash, role</li>
+        <li><b>assessments</b> — id, <b>client_uuid</b> (offline dedup key), engineer_id, owner &amp; building fields, damage_type, <b>severity</b>, habitability, status, source</li>
+        <li><b>media</b> — id, assessment_id, filename, mime_type, kind (image/video), size</li>
+        <li><b>contacts</b>, <b>activity_log</b> — feedback &amp; engineer activity tracking</li>
+      </ul>
+      <p class="muted">Full ER &amp; class diagrams in <b>diagrams.html</b>.</p>
+    </section>
+
+    <!-- 9 -->
+    <section class="slide">
+      <h2>The Highlight — Offline-First</h2>
+      <p>The hardest, most valuable requirement: keep working with <b>no internet</b>.</p>
+      <div class="flow" style="margin:1rem 0">
+        <span class="step">1 · Engineer fills form (offline)</span><span class="sep">→</span>
+        <span class="step">2 · Saved to <b>IndexedDB</b> with client_uuid</span><span class="sep">→</span>
+        <span class="step">3 · Navbar shows “N pending”</span>
+      </div>
+      <div class="flow">
+        <span class="step">4 · Connection returns → <b>online</b> event</span><span class="sep">→</span>
+        <span class="step">5 · POST /api/sync (records + base64 media)</span><span class="sep">→</span>
+        <span class="step">6 · Server <b>upserts by client_uuid</b></span><span class="sep">→</span>
+        <span class="step">7 · Synced records cleared locally</span>
+      </div>
+      <p class="big" style="margin-top:1.2rem">Idempotent sync = <span class="ok">no duplicates</span>, even if sync runs twice.</p>
+      <p class="muted">The Service Worker precaches the whole app shell, so the app itself loads with zero network.</p>
+    </section>
+
+    <!-- 10 -->
+    <section class="slide">
+      <h2>Security &amp; Reliability</h2>
+      <ul>
+        <li>🔐 Passwords hashed with <b>bcrypt</b>; sessions via <b>JWT in an httpOnly cookie</b></li>
+        <li>🙅 <b>Ownership isolation</b> — engineers can only read/edit their own assessments &amp; media</li>
+        <li>✅ <b>Server-side validation</b> on every write (required fields, enums, ranges)</li>
+        <li>🛡️ Security headers (nosniff, X-Frame-Options), upload type/size limits</li>
+        <li>💾 Reliable storage in a relational DB; <b>idempotent</b> sync prevents data loss/duplication</li>
+      </ul>
+    </section>
+
+    <!-- 11 -->
+    <section class="slide">
+      <h2>Testing — TC1…TC12 (all passing)</h2>
+      <div class="two">
+        <table>
+          <tr><th>ID</th><th>Test</th><th></th></tr>
+          <tr><td>TC1</td><td>Login</td><td class="ok">✔</td></tr>
+          <tr><td>TC2</td><td>Create Assessment</td><td class="ok">✔</td></tr>
+          <tr><td>TC3</td><td>Upload Image</td><td class="ok">✔</td></tr>
+          <tr><td>TC4</td><td>Generate Report (PDF)</td><td class="ok">✔</td></tr>
+          <tr><td>TC5</td><td>View History (filter/search)</td><td class="ok">✔</td></tr>
+          <tr><td>TC6</td><td>Offline collection + sync</td><td class="ok">✔</td></tr>
+          <tr><td>TC7</td><td>Edit Assessment</td><td class="ok">✔</td></tr>
+        </table>
+        <table>
+          <tr><th>ID</th><th>Test</th><th></th></tr>
+          <tr><td>TC8</td><td>Auth required (401)</td><td class="ok">✔</td></tr>
+          <tr><td>TC9</td><td>Cross-engineer isolation</td><td class="ok">✔</td></tr>
+          <tr><td>TC10</td><td>Contact validation</td><td class="ok">✔</td></tr>
+          <tr><td>TC11</td><td>Stats accuracy</td><td class="ok">✔</td></tr>
+          <tr><td>TC12</td><td>Profile + password change</td><td class="ok">✔</td></tr>
+        </table>
+      </div>
+      <p class="big" style="margin-top:1rem"><span class="ok">13 / 13 automated tests pass</span> &nbsp;·&nbsp; <code>npm test</code></p>
+    </section>
+
+    <!-- 12 -->
+    <section class="slide">
+      <h2>Agile Process</h2>
+      <div class="kpi" style="margin-bottom:1rem">
+        <div><div class="n">6</div>Scrum sprints</div>
+        <div><div class="n">5</div>Team members</div>
+        <div><div class="n">Jira</div>Backlog &amp; tasks</div>
+        <div><div class="n">GitHub</div>Version control</div>
+      </div>
+      <ul>
+        <li><b>S1</b> Proposal → <b>S2</b> Requirements &amp; Report → <b>S3</b> Planning (Jira/GitHub)</li>
+        <li><b>S4–S5</b> Frontend &amp; Backend implementation → <b>S6</b> Testing &amp; finalization</li>
+        <li>Roles distributed across UI, API, database, offline/PWA, testing &amp; docs</li>
+      </ul>
+    </section>
+
+    <!-- 13 -->
+    <section class="slide">
+      <h2>Challenges &amp; Future Work</h2>
+      <div class="two">
+        <div>
+          <p><b>Challenges solved</b></p>
+          <ul>
+            <li>Reliable offline capture &amp; conflict-free sync (client_uuid upsert)</li>
+            <li>Embedding photos into generated PDFs</li>
+            <li>Serving media securely (auth + ownership)</li>
+          </ul>
+        </div>
+        <div>
+          <p><b>Future work</b></p>
+          <ul>
+            <li>Map view of assessments by GPS</li>
+            <li>Role-based org dashboards &amp; export to Excel</li>
+            <li>Background Sync API &amp; image compression</li>
+            <li>Arabic (RTL) localization</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- 14 -->
+    <section class="slide title-slide">
+      <span class="badge">Thank you</span>
+      <h1>Questions?</h1>
+      <p class="sub">BuildSafe Gaza — Building Damage Assessment Platform</p>
+      <p class="sub">Live demo: <b>http://localhost:3000</b> · Demo login: mahmoud@buildsafe.ps / Engineer@123</p>
+      <p class="sub muted" style="opacity:.85">Repo on GitHub · Board on Jira · Docs on Google Drive</p>
+    </section>
+
+  </div>
+
+  <div class="progress" id="prog"></div>
+  <div class="nav" id="nav">1 / 14</div>
+  <div class="hintbar">← / → or Space to navigate · F for fullscreen</div>
+
+  <script>
+    const slides = [...document.querySelectorAll('.slide')];
+    let i = 0;
+    const nav = document.getElementById('nav');
+    const prog = document.getElementById('prog');
+    function show(n) {
+      i = Math.max(0, Math.min(slides.length - 1, n));
+      slides.forEach((s, k) => s.classList.toggle('active', k === i));
+      nav.textContent = `${i + 1} / ${slides.length}`;
+      prog.style.width = ((i + 1) / slides.length * 100) + '%';
+      location.hash = '#' + (i + 1);
+    }
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') { e.preventDefault(); show(i + 1); }
+      else if (e.key === 'ArrowLeft' || e.key === 'PageUp') { show(i - 1); }
+      else if (e.key === 'Home') show(0);
+      else if (e.key === 'End') show(slides.length - 1);
+      else if (e.key.toLowerCase() === 'f') { document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen(); }
+    });
+    document.addEventListener('click', (e) => { if (!e.target.closest('a')) show(i + 1); });
+    const start = parseInt((location.hash || '#1').slice(1), 10);
+    show(isNaN(start) ? 0 : start - 1);
+  </script>
+</body>
+</html>

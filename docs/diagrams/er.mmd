@@ -1,0 +1,40 @@
+erDiagram
+  ENGINEERS ||--o{ ASSESSMENTS : "creates"
+  ASSESSMENTS ||--o{ MEDIA : "contains"
+  ENGINEERS ||--o{ ACTIVITY_LOG : "performs"
+  ENGINEERS {
+    int id PK
+    string full_name
+    string email UK
+    string phone
+    string password_hash
+    string role
+  }
+  ASSESSMENTS {
+    int id PK
+    string client_uuid UK
+    int engineer_id FK
+    string building_location
+    string damage_type
+    string severity
+    string status
+    string source
+  }
+  MEDIA {
+    int id PK
+    int assessment_id FK
+    string filename
+    string kind
+    string mime_type
+  }
+  ACTIVITY_LOG {
+    int id PK
+    int engineer_id FK
+    string action
+  }
+  CONTACTS {
+    int id PK
+    string name
+    string email
+    string message
+  }

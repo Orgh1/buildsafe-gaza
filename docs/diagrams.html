@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BuildSafe Gaza — Diagrams</title>
+  <style>
+    body { font-family: system-ui, "Segoe UI", sans-serif; margin: 0; background: #f5f7f8; color: #1f2937; }
+    header { background: linear-gradient(90deg,#0b5c55,#0f766e); color:#fff; padding: 1.5rem 2rem; }
+    header h1 { margin: 0; font-size: 1.5rem; }
+    header p { margin: .25rem 0 0; opacity: .9; }
+    .wrap { max-width: 1100px; margin: 0 auto; padding: 1.5rem; }
+    section { background:#fff; border-radius: 14px; box-shadow: 0 2px 12px rgba(0,0,0,.06); padding: 1.5rem; margin: 1.25rem 0; }
+    h2 { color:#0f766e; border-bottom: 2px solid #e6fffa; padding-bottom:.4rem; }
+    .mermaid { text-align:center; overflow-x:auto; }
+    .hint { color:#6b7280; font-size:.85rem; }
+    @media print { section { page-break-inside: avoid; box-shadow:none; } }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>BuildSafe Gaza — System Diagrams</h1>
+    <p>Architecture · Use Case · Class · Entity-Relationship · Sequence (offline sync)</p>
+  </header>
+  <div class="wrap">
+    <p class="hint">Tip: open this file in a browser. Use your browser's “Print → Save as PDF” to export, or screenshot each diagram for the slides/report.</p>
+
+    <section>
+      <h2>1. System Architecture (Three-Tier)</h2>
+      <pre class="mermaid">
+flowchart TB
+  subgraph P["Presentation Layer — PWA (Browser / Mobile)"]
+    UI["HTML5 · CSS3 · Bootstrap 5 · JS<br/>Pages: Landing, Login, Dashboard,<br/>Assessment, View, History, Profile"]
+    SW["Service Worker<br/>(app-shell cache)"]
+    IDB[("IndexedDB<br/>offline queue + cache")]
+  end
+  subgraph A["Application Layer — Node.js + Express REST API"]
+    AUTH["Auth (JWT + bcrypt)"]
+    ASMT["Assessments / Media / Reports"]
+    SYNC["Sync Service"]
+    PDF["PDF Generator (PDFKit)"]
+  end
+  subgraph D["Data Layer"]
+    DB[("SQLite Database<br/>engineers · assessments · media<br/>contacts · activity_log")]
+    FS[("File Storage<br/>uploaded images / videos")]
+  end
+  UI <--> SW
+  UI <--> IDB
+  UI -->|"HTTPS JSON / multipart"| AUTH
+  UI --> ASMT
+  IDB -->|"on reconnect"| SYNC
+  AUTH --> DB
+  ASMT --> DB
+  ASMT --> FS
+  SYNC --> DB
+  SYNC --> FS
+  PDF --> FS
+      </pre>
+    </section>
+
+    <section>
+      <h2>2. Use Case Diagram</h2>
+      <pre class="mermaid">
+flowchart LR
+  ENG(["👷 Field Engineer"])
+  ADMIN(["🛡️ Admin / Humanitarian Org"])
+  VISITOR(["🌐 Visitor"])
+
+  subgraph SYS["BuildSafe Gaza Platform"]
+    U1(["Register / Login"])
+    U2(["Create / Edit Assessment"])
+    U3(["Document Damage & Severity"])
+    U4(["Upload Media"])
+    U5(["Generate PDF Report"])
+    U6(["View Assessment History"])
+    U7(["Work Offline"])
+    U8(["Synchronize Data"])
+    U9(["Manage Profile"])
+    U10(["View System Statistics"])
+    U11(["Submit Contact / Feedback"])
+  end
+
+  ENG --- U1
+  ENG --- U2
+  ENG --- U3
+  ENG --- U4
+  ENG --- U5
+  ENG --- U6
+  ENG --- U7
+  ENG --- U8
+  ENG --- U9
+  ADMIN --- U10
+  ADMIN --- U6
+  VISITOR --- U11
+  U2 -. include .-> U3
+  U7 -. extend .-> U8
+      </pre>
+    </section>
+
+    <section>
+      <h2>3. Class Diagram</h2>
+      <pre class="mermaid">
+classDiagram
+  class Engineer {
+    +int id
+    +string full_name
+    +string email
+    +string phone
+    -string password_hash
+    +string role
+    +register()
+    +login()
+    +updateProfile()
+    +changePassword()
+  }
+  class Assessment {
+    +int id
+    +string client_uuid
+    +int engineer_id
+    +string owner_name
+    +string building_location
+    +int num_floors
+    +string damage_type
+    +string severity
+    +string habitability
+    +string status
+    +string source
+    +create()
+    +update()
+    +delete()
+    +generateReport()
+  }
+  class Media {
+    +int id
+    +int assessment_id
+    +string filename
+    +string mime_type
+    +string kind
+    +int size
+  }
+  class Report {
+    +int assessmentId
+    +render()
+    +toPDF()
+  }
+  class Contact {
+    +int id
+    +string name
+    +string email
+    +string message
+  }
+  class ActivityLog {
+    +int id
+    +int engineer_id
+    +string action
+    +datetime created_at
+  }
+  Engineer "1" --> "0..*" Assessment : creates
+  Assessment "1" --> "0..*" Media : has
+  Assessment "1" ..> "1" Report : generates
+  Engineer "1" --> "0..*" ActivityLog : records
+      </pre>
+    </section>
+
+    <section>
+      <h2>4. Entity-Relationship Diagram</h2>
+      <pre class="mermaid">
+erDiagram
+  ENGINEERS ||--o{ ASSESSMENTS : "creates"
+  ASSESSMENTS ||--o{ MEDIA : "contains"
+  ENGINEERS ||--o{ ACTIVITY_LOG : "performs"
+  ENGINEERS {
+    int id PK
+    string full_name
+    string email UK
+    string phone
+    string password_hash
+    string role
+  }
+  ASSESSMENTS {
+    int id PK
+    string client_uuid UK
+    int engineer_id FK
+    string building_location
+    string damage_type
+    string severity
+    string status
+    string source
+  }
+  MEDIA {
+    int id PK
+    int assessment_id FK
+    string filename
+    string kind
+    string mime_type
+  }
+  ACTIVITY_LOG {
+    int id PK
+    int engineer_id FK
+    string action
+  }
+  CONTACTS {
+    int id PK
+    string name
+    string email
+    string message
+  }
+      </pre>
+    </section>
+
+    <section>
+      <h2>5. Sequence Diagram — Offline Collection &amp; Synchronization</h2>
+      <pre class="mermaid">
+sequenceDiagram
+  actor Eng as Field Engineer
+  participant UI as PWA (Browser)
+  participant IDB as IndexedDB
+  participant SW as Service Worker
+  participant API as Express API
+  participant DB as SQLite + Files
+
+  Note over Eng,SW: 🚫 No internet connection
+  Eng->>UI: Fill assessment form + add photos
+  UI->>UI: navigator.onLine == false
+  UI->>IDB: Save pending record (client_uuid + base64 media)
+  IDB-->>UI: stored
+  UI-->>Eng: "Saved offline — will sync later"
+
+  Note over Eng,DB: 📶 Connectivity restored
+  UI->>UI: 'online' event fires
+  UI->>IDB: Read all pending records
+  IDB-->>UI: [pending...]
+  UI->>API: POST /api/sync { assessments + media }
+  API->>DB: Upsert by client_uuid (+ save media files)
+  DB-->>API: created / updated ids
+  API-->>UI: results [{client_uuid, server_id, status}]
+  UI->>IDB: Delete successfully synced records
+  UI-->>Eng: "Synced N record(s)"
+      </pre>
+    </section>
+  </div>
+
+  <script src="./vendor/mermaid.min.js"></script>
+  <script>
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: 'base',
+      themeVariables: {
+        primaryColor: '#e6fffa', primaryBorderColor: '#0f766e', primaryTextColor: '#0f3d39',
+        lineColor: '#0f766e', fontFamily: 'system-ui, Segoe UI, sans-serif',
+      },
+      flowchart: { htmlLabels: true, curve: 'basis' },
+    });
+  </script>
+</body>
+</html>
