@@ -1,0 +1,136 @@
+'use strict';
+
+const fs = require('fs');
+const path = require('path');
+const PDFDocument = require('pdfkit');
+const { UPLOAD_DIR } = require('../config');
+
+const TEAL = '#0f766e';
+const DARK = '#1f2937';
+const GREY = '#6b7280';
+const LIGHT = '#f3f4f6';
+
+function severityColor(sev) {
+  return ({ Minor: '#16a34a', Moderate: '#ca8a04', Severe: '#ea580c', Critical: '#dc2626' })[sev] || GREY;
+}
+
+/**
+ * Stream a structured PDF assessment report into the given writable (the HTTP response).
+ */
+function streamReport(res, { assessment, engineer, media }) {
+  const doc = new PDFDocument({ margin: 50, size: 'A4', info: {
+    Title: `Damage Assessment #${assessment.id}`,
+    Author: 'BuildSafe Gaza',
+  } });
+  doc.pipe(res);
+
+  const pageWidth = doc.page.width - doc.page.margins.left - doc.page.margins.right;
+  const left = doc.page.margins.left;
+
+  // ---- Header band ----
+  doc.rect(0, 0, doc.page.width, 90).fill(TEAL);
+  doc.fillColor('#ffffff').fontSize(22).font('Helvetica-Bold')
+    .text('BuildSafe Gaza', left, 28);
+  doc.fontSize(11).font('Helvetica')
+    .text('Building Damage Assessment Report', left, 56);
+  doc.fontSize(10).fillColor('#d1fae5')
+    .text(`Report ID: BSG-${String(assessment.id).padStart(5, '0')}`, left, 28, { width: pageWidth, align: 'right' })
+    .text(`Generated: ${new Date().toISOString().slice(0, 10)}`, left, 44, { width: pageWidth, align: 'right' });
+
+  doc.fillColor(DARK).moveDown(2);
+  doc.y = 110;
+
+  // ---- Severity badge ----
+  const sevColor = severityColor(assessment.severity);
+  doc.roundedRect(left, doc.y, 200, 30, 4).fill(sevColor);
+  doc.fillColor('#ffffff').fontSize(12).font('Helvetica-Bold')
+    .text(`Severity: ${assessment.severity || 'N/A'}`, left + 10, doc.y + 9);
+  doc.fillColor(DARK).moveDown(2.2);
+
+  // ---- Helper to render a section ----
+  function section(title) {
+    doc.moveDown(0.6);
+    doc.fillColor(TEAL).font('Helvetica-Bold').fontSize(13).text(title);
+    doc.moveTo(left, doc.y + 2).lineTo(left + pageWidth, doc.y + 2).strokeColor(TEAL).lineWidth(1).stroke();
+    doc.moveDown(0.5);
+    doc.fillColor(DARK).font('Helvetica').fontSize(10);
+  }
+
+  function field(label, value) {
+    const y = doc.y;
+    doc.font('Helvetica-Bold').fillColor(GREY).fontSize(9).text(label.toUpperCase(), left, y, { width: 160 });
+    doc.font('Helvetica').fillColor(DARK).fontSize(11).text(value != null && value !== '' ? String(value) : '—', left + 165, y, { width: pageWidth - 165 });
+    doc.moveDown(0.4);
+  }
+
+  section('Building Information');
+  field('Location', assessment.building_location);
+  field('Building type', assessment.building_type);
+  field('Number of floors', assessment.num_floors);
+  field('Year built', assessment.year_built);
+  if (assessment.latitude != null && assessment.longitude != null) {
+    field('GPS coordinates', `${assessment.latitude}, ${assessment.longitude}`);
+  }
+
+  section('Owner Information');
+  field('Owner name', assessment.owner_name);
+  field('National ID', assessment.owner_id_number);
+  field('Phone', assessment.owner_phone);
+
+  section('Damage Assessment');
+  field('Damage type', assessment.damage_type);
+  field('Severity level', assessment.severity);
+  field('Habitability', assessment.habitability);
+  field('Status', assessment.status);
+
+  section('Engineer Notes');
+  doc.font('Helvetica').fillColor(DARK).fontSize(11)
+    .text(assessment.notes && assessment.notes.trim() ? assessment.notes : 'No additional notes.', { width: pageWidth });
+
+  section('Assessed By');
+  field('Engineer', engineer ? engineer.full_name : '—');
+  field('Email', engineer ? engineer.email : '—');
+  field('Assessed on', (assessment.created_at || '').slice(0, 16).replace('T', ' '));
+
+  // ---- Photos ----
+  const images = (media || []).filter((m) => m.kind === 'image');
+  if (images.length) {
+    section('Photo Documentation');
+    let x = left;
+    let rowTop = doc.y;
+    const imgW = (pageWidth - 15) / 2;
+    const imgH = 130;
+    images.forEach((m, i) => {
+      const p = path.join(UPLOAD_DIR, m.filename);
+      if (i % 2 === 0) { x = left; }
+      else { x = left + imgW + 15; }
+      if (i % 2 === 0 && i > 0) rowTop += imgH + 15;
+      if (rowTop + imgH > doc.page.height - doc.page.margins.bottom) {
+        doc.addPage();
+        rowTop = doc.page.margins.top;
+      }
+      try {
+        if (fs.existsSync(p)) {
+          doc.image(p, x, rowTop, { fit: [imgW, imgH], align: 'center' });
+          doc.rect(x, rowTop, imgW, imgH).strokeColor(LIGHT).lineWidth(1).stroke();
+        }
+      } catch (_) { /* skip unreadable image */ }
+    });
+    doc.y = rowTop + imgH + 10;
+  }
+
+  const videoCount = (media || []).filter((m) => m.kind === 'video').length;
+  if (videoCount) {
+    doc.moveDown(0.5).fillColor(GREY).fontSize(9)
+      .text(`+ ${videoCount} video file(s) attached in the system (not embedded in PDF).`);
+  }
+
+  // ---- Footer ----
+  doc.fontSize(8).fillColor(GREY)
+    .text('This is a preliminary field assessment generated by BuildSafe Gaza. Islamic University of Gaza — Software Engineering Project.',
+      left, doc.page.height - 60, { width: pageWidth, align: 'center' });
+
+  doc.end();
+}
+
+module.exports = { streamReport };

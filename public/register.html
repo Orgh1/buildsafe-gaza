@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Register — BuildSafe Gaza</title>
+  <meta name="theme-color" content="#0f766e">
+  <link rel="manifest" href="/manifest.webmanifest">
+  <link rel="icon" href="/img/icon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/vendor/bootstrap/bootstrap.min.css">
+  <link rel="stylesheet" href="/vendor/icons/bootstrap-icons.min.css">
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <div id="app-nav"></div>
+  <div class="container" style="max-width:480px">
+    <div class="card p-4 p-md-5 mt-5">
+      <div class="text-center mb-4">
+        <span class="brand-logo mx-auto mb-2" style="width:48px;height:48px;font-size:1.2rem">BS</span>
+        <h3 class="text-bsg fw-bold mb-0">Create your account</h3>
+        <p class="text-muted small">Register as a field engineer</p>
+      </div>
+      <div id="error" class="alert alert-danger d-none"></div>
+      <form id="reg-form">
+        <div class="mb-3">
+          <label class="form-label required">Full name</label>
+          <input type="text" class="form-control" id="full_name" required>
+        </div>
+        <div class="mb-3">
+          <label class="form-label required">Email</label>
+          <input type="email" class="form-control" id="email" required autocomplete="email">
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Phone</label>
+          <input type="tel" class="form-control" id="phone" placeholder="+970...">
+        </div>
+        <div class="mb-3">
+          <label class="form-label required">Password</label>
+          <input type="password" class="form-control" id="password" required minlength="6" autocomplete="new-password">
+          <div class="form-text">At least 6 characters.</div>
+        </div>
+        <button type="submit" class="btn btn-bsg w-100" id="submit-btn">Register</button>
+      </form>
+      <p class="text-center text-muted small mt-3 mb-0">Already have an account? <a href="/login.html" class="text-bsg">Log in</a></p>
+    </div>
+  </div>
+
+  <script src="/vendor/bootstrap/bootstrap.bundle.min.js"></script>
+  <script src="/js/config.js"></script>
+  <script src="/js/api.js"></script>
+  <script src="/js/idb.js"></script>
+  <script src="/js/ui.js"></script>
+  <script src="/js/sync.js"></script>
+  <script>
+    (async () => {
+      await BSG.ui.loadUser();
+      BSG.ui.renderNav('register');
+      BSG.ui.registerSW();
+      const form = document.getElementById('reg-form');
+      const err = document.getElementById('error');
+      const btn = document.getElementById('submit-btn');
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        err.classList.add('d-none');
+        btn.disabled = true; btn.textContent = 'Creating…';
+        try {
+          await BSG.api.post('/api/auth/register', {
+            full_name: document.getElementById('full_name').value.trim(),
+            email: document.getElementById('email').value.trim(),
+            phone: document.getElementById('phone').value.trim(),
+            password: document.getElementById('password').value,
+          });
+          location.href = '/dashboard.html';
+        } catch (ex) {
+          err.textContent = ex.message; err.classList.remove('d-none');
+          btn.disabled = false; btn.textContent = 'Register';
+        }
+      });
+    })();
+  </script>
+</body>
+</html>

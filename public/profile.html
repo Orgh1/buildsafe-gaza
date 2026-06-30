@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Profile — BuildSafe Gaza</title>
+  <meta name="theme-color" content="#0f766e">
+  <link rel="manifest" href="/manifest.webmanifest">
+  <link rel="icon" href="/img/icon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/vendor/bootstrap/bootstrap.min.css">
+  <link rel="stylesheet" href="/vendor/icons/bootstrap-icons.min.css">
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <div id="app-nav"></div>
+  <main class="container page mx-auto my-4" style="max-width:680px">
+    <h3 class="fw-bold mb-3"><i class="bi bi-person-gear text-bsg"></i> My Profile</h3>
+
+    <div class="card p-4 mb-4">
+      <h6 class="form-section-title">Account Information</h6>
+      <div id="p-error" class="alert alert-danger d-none"></div>
+      <form id="profile-form">
+        <div class="mb-3"><label class="form-label required">Full name</label><input class="form-control" id="full_name" required></div>
+        <div class="mb-3"><label class="form-label required">Email</label><input type="email" class="form-control" id="email" required></div>
+        <div class="mb-3"><label class="form-label">Phone</label><input class="form-control" id="phone"></div>
+        <div class="mb-3"><label class="form-label">Role</label><input class="form-control" id="role" disabled></div>
+        <button class="btn btn-bsg" type="submit"><i class="bi bi-save"></i> Save changes</button>
+      </form>
+    </div>
+
+    <div class="card p-4">
+      <h6 class="form-section-title">Change Password</h6>
+      <div id="pw-error" class="alert alert-danger d-none"></div>
+      <form id="pw-form">
+        <div class="mb-3"><label class="form-label">Current password</label><input type="password" class="form-control" id="current_password" autocomplete="current-password"></div>
+        <div class="mb-3"><label class="form-label">New password</label><input type="password" class="form-control" id="new_password" minlength="6" autocomplete="new-password"></div>
+        <button class="btn btn-outline-bsg" type="submit"><i class="bi bi-key"></i> Update password</button>
+      </form>
+    </div>
+  </main>
+
+  <script src="/vendor/bootstrap/bootstrap.bundle.min.js"></script>
+  <script src="/js/config.js"></script>
+  <script src="/js/api.js"></script>
+  <script src="/js/idb.js"></script>
+  <script src="/js/ui.js"></script>
+  <script src="/js/sync.js"></script>
+  <script src="/js/profile.js"></script>
+</body>
+</html>

@@ -1,0 +1,33 @@
+{
+  "name": "buildsafe-gaza",
+  "version": "1.0.0",
+  "description": "BuildSafe Gaza — Building Damage Assessment Platform for field engineers (offline-capable PWA)",
+  "type": "commonjs",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "node --watch src/server.js",
+    "seed": "node src/db/seed.js",
+    "test": "node --test"
+  },
+  "keywords": [
+    "damage-assessment",
+    "gaza",
+    "pwa",
+    "offline-first",
+    "express"
+  ],
+  "author": "BuildSafe Gaza Team (IUG)",
+  "license": "MIT",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "better-sqlite3": "^11.8.1",
+    "bootstrap": "^5.3.3",
+    "bootstrap-icons": "^1.11.3",
+    "cookie-parser": "^1.4.7",
+    "express": "^4.21.2",
+    "jsonwebtoken": "^9.0.2",
+    "multer": "^2.2.0",
+    "pdfkit": "^0.15.1"
+  }
+}

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Assessment History — BuildSafe Gaza</title>
+  <meta name="theme-color" content="#0f766e">
+  <link rel="manifest" href="/manifest.webmanifest">
+  <link rel="icon" href="/img/icon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/vendor/bootstrap/bootstrap.min.css">
+  <link rel="stylesheet" href="/vendor/icons/bootstrap-icons.min.css">
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <div id="app-nav"></div>
+  <main class="container page mx-auto my-4">
+    <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-3">
+      <h3 class="fw-bold mb-0"><i class="bi bi-clock-history text-bsg"></i> Assessment History</h3>
+      <a href="/assessment.html" class="btn btn-bsg"><i class="bi bi-plus-lg"></i> New Assessment</a>
+    </div>
+
+    <div id="offline-note" class="alert alert-warning d-none"><i class="bi bi-wifi-off"></i> Offline — showing locally cached and pending records.</div>
+
+    <div class="card p-3 mb-3">
+      <div class="row g-2">
+        <div class="col-md-5"><input class="form-control" id="q" placeholder="Search location, owner, notes…"></div>
+        <div class="col-md-3"><select class="form-select" id="severity"><option value="">All severities</option></select></div>
+        <div class="col-md-2"><select class="form-select" id="status"><option value="">All statuses</option><option value="submitted">Submitted</option><option value="draft">Draft</option><option value="reviewed">Reviewed</option></select></div>
+        <div class="col-md-2"><select class="form-select" id="sort"><option value="newest">Newest first</option><option value="oldest">Oldest first</option></select></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-body p-0">
+        <div class="table-responsive">
+          <table class="table mb-0 align-middle">
+            <thead class="table-light"><tr><th>ID</th><th>Location</th><th>Type</th><th>Severity</th><th>Status</th><th>Media</th><th>Date</th><th></th></tr></thead>
+            <tbody id="body"><tr><td colspan="8" class="text-center text-muted py-4">Loading…</td></tr></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <p class="text-muted small mt-2" id="count-label"></p>
+  </main>
+
+  <script src="/vendor/bootstrap/bootstrap.bundle.min.js"></script>
+  <script src="/js/config.js"></script>
+  <script src="/js/api.js"></script>
+  <script src="/js/idb.js"></script>
+  <script src="/js/ui.js"></script>
+  <script src="/js/sync.js"></script>
+  <script src="/js/history.js"></script>
+</body>
+</html>

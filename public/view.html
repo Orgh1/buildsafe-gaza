@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Assessment — BuildSafe Gaza</title>
+  <meta name="theme-color" content="#0f766e">
+  <link rel="manifest" href="/manifest.webmanifest">
+  <link rel="icon" href="/img/icon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/vendor/bootstrap/bootstrap.min.css">
+  <link rel="stylesheet" href="/vendor/icons/bootstrap-icons.min.css">
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <div id="app-nav"></div>
+  <main class="container page mx-auto my-4" style="max-width:900px">
+    <div id="content"><div class="text-center text-muted py-5">Loading…</div></div>
+  </main>
+
+  <!-- Image lightbox -->
+  <div class="modal fade" id="imgModal" tabindex="-1">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+      <div class="modal-content bg-dark">
+        <div class="modal-body p-0 text-center">
+          <img id="modal-img" src="" class="img-fluid" alt="media">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="/vendor/bootstrap/bootstrap.bundle.min.js"></script>
+  <script src="/js/config.js"></script>
+  <script src="/js/api.js"></script>
+  <script src="/js/idb.js"></script>
+  <script src="/js/ui.js"></script>
+  <script src="/js/sync.js"></script>
+  <script src="/js/view.js"></script>
+</body>
+</html>

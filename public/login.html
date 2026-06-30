@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Log in — BuildSafe Gaza</title>
+  <meta name="theme-color" content="#0f766e">
+  <link rel="manifest" href="/manifest.webmanifest">
+  <link rel="icon" href="/img/icon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/vendor/bootstrap/bootstrap.min.css">
+  <link rel="stylesheet" href="/vendor/icons/bootstrap-icons.min.css">
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <div id="app-nav"></div>
+  <div class="container" style="max-width:440px">
+    <div class="card p-4 p-md-5 mt-5">
+      <div class="text-center mb-4">
+        <span class="brand-logo mx-auto mb-2" style="width:48px;height:48px;font-size:1.2rem">BS</span>
+        <h3 class="text-bsg fw-bold mb-0">Welcome back</h3>
+        <p class="text-muted small">Log in to access your assessments</p>
+      </div>
+      <div id="error" class="alert alert-danger d-none"></div>
+      <form id="login-form">
+        <div class="mb-3">
+          <label class="form-label">Email</label>
+          <input type="email" class="form-control" id="email" required autocomplete="email" value="">
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Password</label>
+          <input type="password" class="form-control" id="password" required autocomplete="current-password">
+        </div>
+        <button type="submit" class="btn btn-bsg w-100" id="submit-btn">Log in</button>
+      </form>
+      <p class="text-center text-muted small mt-3 mb-0">No account? <a href="/register.html" class="text-bsg">Register</a></p>
+      <div class="alert alert-light border mt-3 small mb-0">
+        <strong>Demo accounts</strong><br>
+        Engineer: <code>mahmoud@buildsafe.ps</code> / <code>Engineer@123</code><br>
+        Admin: <code>admin@buildsafe.ps</code> / <code>Admin@123</code>
+      </div>
+    </div>
+  </div>
+
+  <script src="/vendor/bootstrap/bootstrap.bundle.min.js"></script>
+  <script src="/js/config.js"></script>
+  <script src="/js/api.js"></script>
+  <script src="/js/idb.js"></script>
+  <script src="/js/ui.js"></script>
+  <script src="/js/sync.js"></script>
+  <script>
+    (async () => {
+      await BSG.ui.loadUser();
+      BSG.ui.renderNav('login');
+      BSG.ui.registerSW();
+      const params = new URLSearchParams(location.search);
+      const next = params.get('next') || '/dashboard.html';
+      const form = document.getElementById('login-form');
+      const err = document.getElementById('error');
+      const btn = document.getElementById('submit-btn');
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        err.classList.add('d-none');
+        btn.disabled = true; btn.textContent = 'Logging in…';
+        try {
+          await BSG.api.post('/api/auth/login', {
+            email: document.getElementById('email').value.trim(),
+            password: document.getElementById('password').value,
+          });
+          location.href = next;
+        } catch (ex) {
+          err.textContent = ex.message; err.classList.remove('d-none');
+          btn.disabled = false; btn.textContent = 'Log in';
+        }
+      });
+    })();
+  </script>
+</body>
+</html>

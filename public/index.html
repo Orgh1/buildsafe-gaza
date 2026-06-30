@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BuildSafe Gaza — Building Damage Assessment Platform</title>
+  <meta name="description" content="A digital platform that helps field engineers assess and document damaged buildings in Gaza, even offline.">
+  <meta name="theme-color" content="#0f766e">
+  <link rel="manifest" href="/manifest.webmanifest">
+  <link rel="icon" href="/img/icon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/vendor/bootstrap/bootstrap.min.css">
+  <link rel="stylesheet" href="/vendor/icons/bootstrap-icons.min.css">
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <div id="app-nav"></div>
+
+  <!-- Hero -->
+  <header class="hero">
+    <div class="container text-center">
+      <h1 class="display-4 mb-3">Building Damage Assessment Platform</h1>
+      <p class="lead mb-4 mx-auto" style="max-width:720px">
+        A digital, standardized solution that helps field engineers assess partially damaged buildings in Gaza,
+        document damage with photos and video, and generate structured reports — even without an internet connection.
+      </p>
+      <a href="/register.html" class="btn btn-light btn-lg px-4 me-2"><i class="bi bi-clipboard-check"></i> Start Assessing</a>
+      <a href="#features" class="btn btn-outline-light btn-lg px-4">Learn more</a>
+    </div>
+  </header>
+
+  <!-- Problem / Why -->
+  <section class="container page mx-auto my-5">
+    <div class="row g-4 align-items-center">
+      <div class="col-lg-6">
+        <h2 class="text-bsg fw-bold">Why this platform?</h2>
+        <p class="text-muted">After the 2023 destruction in Gaza, thousands of buildings need evaluation. Today these
+          assessments are done manually, are not standardized, and are hard to document and share.</p>
+        <ul class="list-unstyled">
+          <li class="mb-2"><i class="bi bi-check-circle-fill text-bsg"></i> Replaces slow, paper-based methods</li>
+          <li class="mb-2"><i class="bi bi-check-circle-fill text-bsg"></i> Standardized, structured damage records</li>
+          <li class="mb-2"><i class="bi bi-check-circle-fill text-bsg"></i> Works in areas with poor connectivity</li>
+          <li class="mb-2"><i class="bi bi-check-circle-fill text-bsg"></i> Faster reporting and decision-making</li>
+        </ul>
+      </div>
+      <div class="col-lg-6">
+        <div class="card p-4">
+          <h5 class="text-bsg">Who is it for?</h5>
+          <div class="d-flex align-items-start mb-3 mt-2">
+            <i class="bi bi-hard-hat fs-3 text-bsg me-3"></i>
+            <div><strong>Field Engineers</strong><br><span class="text-muted small">Enter building & owner data, assess damage, upload media, generate reports.</span></div>
+          </div>
+          <div class="d-flex align-items-start mb-3">
+            <i class="bi bi-buildings fs-3 text-bsg me-3"></i>
+            <div><strong>Humanitarian Organizations</strong><br><span class="text-muted small">Collect reports, analyze conditions, prioritize emergency response.</span></div>
+          </div>
+          <div class="d-flex align-items-start">
+            <i class="bi bi-bank fs-3 text-bsg me-3"></i>
+            <div><strong>Government Authorities</strong><br><span class="text-muted small">Use structured records for reconstruction planning.</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features -->
+  <section id="features" class="container page mx-auto my-5">
+    <h2 class="text-center text-bsg fw-bold mb-4">Core Features</h2>
+    <div class="row g-4">
+      <div class="col-md-4"><div class="card feature-card p-4"><div class="feature-icon"><i class="bi bi-clipboard-data"></i></div><h5>Field Inspection Form</h5><p class="text-muted small">Capture owner info, building details, damage type and severity, and engineer notes in one structured form.</p></div></div>
+      <div class="col-md-4"><div class="card feature-card p-4"><div class="feature-icon"><i class="bi bi-camera"></i></div><h5>Media Documentation</h5><p class="text-muted small">Attach images and videos of the damage as visual evidence for every assessment.</p></div></div>
+      <div class="col-md-4"><div class="card feature-card p-4"><div class="feature-icon"><i class="bi bi-file-earmark-pdf"></i></div><h5>Automated Reports</h5><p class="text-muted small">Generate a structured PDF report instantly — ready to print, export and share.</p></div></div>
+      <div class="col-md-4"><div class="card feature-card p-4"><div class="feature-icon"><i class="bi bi-wifi-off"></i></div><h5>Offline Collection</h5><p class="text-muted small">Keep working without internet. Data and photos are stored on the device.</p></div></div>
+      <div class="col-md-4"><div class="card feature-card p-4"><div class="feature-icon"><i class="bi bi-arrow-repeat"></i></div><h5>Automatic Sync</h5><p class="text-muted small">When connectivity returns, offline records sync to the central server automatically.</p></div></div>
+      <div class="col-md-4"><div class="card feature-card p-4"><div class="feature-icon"><i class="bi bi-graph-up"></i></div><h5>Dashboard & History</h5><p class="text-muted small">Track all your inspections, filter by severity, and review past assessments.</p></div></div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="container my-5 text-center">
+    <div class="card p-5 bg-bsg text-white">
+      <h3 class="fw-bold">Ready to standardize damage assessment?</h3>
+      <p class="mb-4">Create an account and start documenting building damage in minutes.</p>
+      <div><a href="/register.html" class="btn btn-light btn-lg px-4">Get started</a></div>
+    </div>
+  </section>
+
+  <footer class="site-footer">
+    <div class="container text-center">
+      <p class="mb-1"><strong>BuildSafe Gaza</strong> — Building Damage Assessment Platform</p>
+      <p class="small mb-0">Islamic University of Gaza · Software Engineering Project (2026)</p>
+    </div>
+  </footer>
+
+  <script src="/vendor/bootstrap/bootstrap.bundle.min.js"></script>
+  <script src="/js/config.js"></script>
+  <script src="/js/api.js"></script>
+  <script src="/js/idb.js"></script>
+  <script src="/js/ui.js"></script>
+  <script src="/js/sync.js"></script>
+  <script>
+    (async () => {
+      await BSG.ui.loadUser();
+      BSG.ui.renderNav('home');
+      BSG.ui.initConnectivity();
+      BSG.ui.registerSW();
+    })();
+  </script>
+</body>
+</html>

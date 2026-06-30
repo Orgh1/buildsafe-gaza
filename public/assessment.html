@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>New Assessment — BuildSafe Gaza</title>
+  <meta name="theme-color" content="#0f766e">
+  <link rel="manifest" href="/manifest.webmanifest">
+  <link rel="icon" href="/img/icon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/vendor/bootstrap/bootstrap.min.css">
+  <link rel="stylesheet" href="/vendor/icons/bootstrap-icons.min.css">
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <div id="app-nav"></div>
+  <main class="container page mx-auto my-4" style="max-width:900px">
+    <h3 class="fw-bold mb-1" id="form-title"><i class="bi bi-clipboard-plus text-bsg"></i> New Building Assessment</h3>
+    <p class="text-muted small" id="form-sub">Document the condition of a damaged building.</p>
+
+    <div id="offline-note" class="alert alert-warning d-none"><i class="bi bi-wifi-off"></i> You are offline. This assessment will be saved on your device and synced automatically when you reconnect.</div>
+    <div id="error" class="alert alert-danger d-none"></div>
+
+    <form id="assess-form" class="card p-4">
+      <div class="form-section-title">Building Information</div>
+      <div class="row g-3">
+        <div class="col-12">
+          <label class="form-label required">Building location / address</label>
+          <input class="form-control" id="building_location" required placeholder="e.g. Al-Rimal, Gaza City — Omar Al-Mukhtar St.">
+        </div>
+        <div class="col-md-4">
+          <label class="form-label">Building type</label>
+          <select class="form-select" id="building_type"></select>
+        </div>
+        <div class="col-md-4">
+          <label class="form-label">Number of floors</label>
+          <input type="number" class="form-control" id="num_floors" min="0" max="200">
+        </div>
+        <div class="col-md-4">
+          <label class="form-label">Year built</label>
+          <input type="number" class="form-control" id="year_built" min="1800" max="2100">
+        </div>
+        <div class="col-md-5">
+          <label class="form-label">GPS latitude</label>
+          <input type="number" step="any" class="form-control" id="latitude">
+        </div>
+        <div class="col-md-5">
+          <label class="form-label">GPS longitude</label>
+          <input type="number" step="any" class="form-control" id="longitude">
+        </div>
+        <div class="col-md-2 d-flex align-items-end">
+          <button type="button" class="btn btn-outline-bsg w-100" id="geo-btn"><i class="bi bi-geo-alt"></i> Locate</button>
+        </div>
+      </div>
+
+      <div class="form-section-title">Owner Information</div>
+      <div class="row g-3">
+        <div class="col-md-5"><label class="form-label">Owner name</label><input class="form-control" id="owner_name"></div>
+        <div class="col-md-3"><label class="form-label">National ID</label><input class="form-control" id="owner_id_number"></div>
+        <div class="col-md-4"><label class="form-label">Phone</label><input class="form-control" id="owner_phone" placeholder="+970..."></div>
+      </div>
+
+      <div class="form-section-title">Damage Assessment</div>
+      <div class="row g-3">
+        <div class="col-md-4"><label class="form-label">Damage type</label><select class="form-select" id="damage_type"></select></div>
+        <div class="col-md-4"><label class="form-label required">Severity</label><select class="form-select" id="severity" required></select></div>
+        <div class="col-md-4"><label class="form-label">Habitability</label><select class="form-select" id="habitability"></select></div>
+        <div class="col-12"><label class="form-label">Engineer notes &amp; observations</label><textarea class="form-control" id="notes" rows="3" placeholder="Describe the observed damage, risks, and recommendations…"></textarea></div>
+      </div>
+
+      <div class="form-section-title">Media Documentation</div>
+      <div class="mb-2">
+        <input type="file" class="form-control" id="media" accept="image/*,video/mp4,video/webm,video/quicktime" multiple capture="environment">
+        <div class="form-text">Attach photos (and optional video) of the damage. You can select multiple files.</div>
+      </div>
+      <div class="row g-2" id="preview"></div>
+      <div id="existing-media" class="row g-2 mt-1"></div>
+
+      <hr class="my-4">
+      <div class="d-flex gap-2">
+        <button type="submit" class="btn btn-bsg" id="submit-btn"><i class="bi bi-save"></i> Save Assessment</button>
+        <a href="/dashboard.html" class="btn btn-outline-secondary">Cancel</a>
+      </div>
+    </form>
+  </main>
+
+  <script src="/vendor/bootstrap/bootstrap.bundle.min.js"></script>
+  <script src="/js/config.js"></script>
+  <script src="/js/api.js"></script>
+  <script src="/js/idb.js"></script>
+  <script src="/js/ui.js"></script>
+  <script src="/js/sync.js"></script>
+  <script src="/js/assessment.js"></script>
+</body>
+</html>
