@@ -39,6 +39,7 @@ window.BSG.ui = (function () {
     try {
       const r = await BSG.api.get('/api/auth/me');
       user = r.user;
+      try { localStorage.setItem('bsg_user', JSON.stringify(user)); } catch (_) {}
     } catch (_) { user = null; }
     return user;
   }
@@ -46,6 +47,14 @@ window.BSG.ui = (function () {
   async function guard() {
     await loadUser();
     if (!user) {
+      // Offline-first: if we can't reach the server but a session was cached
+      // from a previous online visit, keep the user in so offline work continues.
+      if (!navigator.onLine) {
+        try {
+          const cached = localStorage.getItem('bsg_user');
+          if (cached) { user = JSON.parse(cached); return user; }
+        } catch (_) {}
+      }
       const next = encodeURIComponent(location.pathname + location.search);
       location.replace(`/login.html?next=${next}`);
       return null;
@@ -58,6 +67,7 @@ window.BSG.ui = (function () {
   async function logout() {
     try { await BSG.api.post('/api/auth/logout'); } catch (_) {}
     user = null;
+    try { localStorage.removeItem('bsg_user'); } catch (_) {}
     location.href = '/login.html';
   }
 

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Report — BuildSafe Gaza</title>
+  <meta name="theme-color" content="#0f766e">
+  <link rel="manifest" href="/manifest.webmanifest">
+  <link rel="icon" href="/img/icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/img/icon-192.png">
+  <link rel="stylesheet" id="bs-css" href="/vendor/bootstrap/bootstrap.min.css">
+  <script>(function(){try{var ar=localStorage.getItem('bsg_lang')==='ar';var e=document.documentElement;e.lang=ar?'ar':'en';e.dir=ar?'rtl':'ltr';if(ar){var l=document.getElementById('bs-css');if(l)l.href='/vendor/bootstrap/bootstrap.rtl.min.css';}}catch(_){}})();</script>
+  <link rel="stylesheet" href="/vendor/icons/bootstrap-icons.min.css">
+  <link rel="stylesheet" href="/css/style.css">
+  <style>
+    body { background: #e9edf0; }
+    .sheet { background: #fff; max-width: 800px; margin: 1.5rem auto; padding: 0; box-shadow: 0 4px 20px rgba(0,0,0,.1); border-radius: 8px; overflow: hidden; }
+    .sheet-head { background: linear-gradient(90deg, var(--bsg-teal-dark), var(--bsg-teal)); color: #fff; padding: 1.5rem 2rem; }
+    .sheet-body { padding: 1.5rem 2rem 2.5rem; }
+    .rep-section { color: var(--bsg-teal); font-weight: 700; border-bottom: 2px solid #e6fffa; padding-bottom: .35rem; margin: 1.4rem 0 .8rem; }
+    .rep-field { margin-bottom: .55rem; }
+    .rep-label { font-size: .72rem; letter-spacing: .03em; text-transform: uppercase; color: #6b7280; }
+    .rep-value { font-weight: 600; font-size: 1.02rem; }
+    .rep-photos img { width: 100%; height: 150px; object-fit: cover; border-radius: 8px; border: 1px solid #e5e7eb; }
+    .toolbar { position: sticky; top: 0; z-index: 5; }
+    @media print {
+      body { background: #fff; }
+      .no-print { display: none !important; }
+      .sheet { box-shadow: none; margin: 0; max-width: 100%; border-radius: 0; }
+      .sheet-head { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      @page { margin: 12mm; }
+    }
+  </style>
+</head>
+<body>
+  <div class="toolbar no-print bg-white border-bottom py-2">
+    <div class="container d-flex justify-content-between align-items-center" style="max-width:800px">
+      <a href="#" id="back" class="btn btn-sm btn-outline-secondary"><i class="bi bi-arrow-left"></i> <span data-i18n="Back">Back</span></a>
+      <button id="print" class="btn btn-sm btn-bsg"><i class="bi bi-printer"></i> <span data-i18n="Print / Save as PDF">Print / Save as PDF</span></button>
+    </div>
+  </div>
+
+  <div id="sheet" class="sheet">
+    <div class="text-center text-muted py-5" data-i18n="Loading report…">Loading report…</div>
+  </div>
+
+  <script src="/vendor/bootstrap/bootstrap.bundle.min.js"></script>
+  <script src="/js/config.js"></script>
+  <script src="/js/i18n.js"></script>
+  <script src="/js/api.js"></script>
+  <script src="/js/idb.js"></script>
+  <script src="/js/ui.js"></script>
+  <script src="/js/sync.js"></script>
+  <script src="/js/report.js"></script>
+</body>
+</html>

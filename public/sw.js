@@ -2,15 +2,15 @@
    Strategy: network-first (always serve the latest when online), fall back to
    cache when offline. Keeps the app fully usable offline without ever serving
    a stale page while connected. */
-const VERSION = 'bsg-v3';
+const VERSION = 'bsg-v4';
 
 const APP_SHELL = [
   '/', '/index.html', '/login.html', '/register.html', '/dashboard.html',
   '/assessment.html', '/view.html', '/history.html', '/profile.html', '/contact.html',
-  '/offline.html',
+  '/report.html', '/offline.html',
   '/css/style.css',
   '/js/config.js', '/js/i18n.js', '/js/api.js', '/js/idb.js', '/js/ui.js', '/js/sync.js',
-  '/js/dashboard.js', '/js/assessment.js', '/js/view.js', '/js/history.js', '/js/profile.js',
+  '/js/dashboard.js', '/js/assessment.js', '/js/view.js', '/js/history.js', '/js/profile.js', '/js/report.js',
   '/vendor/bootstrap/bootstrap.min.css', '/vendor/bootstrap/bootstrap.rtl.min.css', '/vendor/bootstrap/bootstrap.bundle.min.js',
   '/vendor/icons/bootstrap-icons.min.css',
   '/vendor/icons/fonts/bootstrap-icons.woff2', '/vendor/icons/fonts/bootstrap-icons.woff',

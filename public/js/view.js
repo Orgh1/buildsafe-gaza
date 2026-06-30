@@ -31,7 +31,7 @@
           <span class="text-muted small">${BSG.ui.escape(a.building_location)}</span>
         </div>
         <div class="d-flex gap-2 no-print">
-          <a href="/api/assessments/${a.id}/report.pdf" target="_blank" class="btn btn-bsg"><i class="bi bi-file-earmark-pdf"></i> ${T('Generate PDF')}</a>
+          <a href="/report.html?id=${a.id}" class="btn btn-bsg"><i class="bi bi-file-earmark-pdf"></i> ${T('Generate PDF')}</a>
           <a href="/assessment.html?id=${a.id}" class="btn btn-outline-bsg"><i class="bi bi-pencil"></i> ${T('Edit')}</a>
           <button id="del-btn" class="btn btn-outline-danger"><i class="bi bi-trash"></i></button>
         </div>
