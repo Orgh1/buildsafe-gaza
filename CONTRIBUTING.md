@@ -16,9 +16,14 @@ shows clearly through their own commits.
 | **4. Offline / PWA / i18n / Sync** | Kareem Abu Musameh | `public/sw.js`, `public/manifest.webmanifest`, `public/js/{idb,sync,i18n}.js`, offline auth in `public/js/ui.js` |
 | **Cross-cutting: Testing & Docs** | Yasser Awda (+ all) | `tests/`, `docs/`, `README.md`, Jira board upkeep |
 
+> **Team of 4.** Each owner also writes the **tests and documentation for their own module**
+> (add test cases in `tests/`, update `docs/` and `README.md`, keep the Jira board current).
+>
 > The code already exists — each owner **improves, tests, documents, and maintains** their
 > module (add test cases, polish UI, write their report/Jira section, fix issues). This
 > produces real, attributable commit history per member.
+>
+> _In memory of our teammate Yasser Awda — رحمه الله._
 
 ---
 
