@@ -160,4 +160,4 @@ buildsafe-gaza/
 ## 👥 Team
 
 Mahmoud Fahmi Irheem · Osama Rami Al-Ghazali · Yasser Mohammed Awda ·
-Ahmed Magdy El-Naggar · Kerim Yusuf Ebu Musameh
+Ahmed Magdy El-Naggar · Kareem Yousef Abu Musameh
