@@ -1,0 +1,31 @@
+Issue Type,Summary,Epic Name,Epic Link,Assignee,Sprint,Status,Description
+Epic,Authentication & Profile,Auth & Profile,,Ahmed El-Naggar,,In Progress,User accounts login sessions and profile management
+Epic,Assessments & Media,Assessments & Media,,Osama Al-Ghazali,,In Progress,Building assessment CRUD and media upload
+Epic,Reports Dashboard & Stats,Reports & Dashboard,,Mahmoud Irheem,,In Progress,Assessment reports dashboard metrics and statistics
+Epic,Offline PWA & i18n,Offline & i18n,,Kerim Abu Musameh,,In Progress,Offline support PWA installability sync and Arabic localization
+Story,Engineer registration,,Auth & Profile,Ahmed El-Naggar,Sprint 4,Done,Register a new field engineer account
+Story,Login with JWT and bcrypt,,Auth & Profile,Ahmed El-Naggar,Sprint 4,Done,Secure login with hashed passwords and JWT cookie session
+Story,Auth middleware and session management,,Auth & Profile,Ahmed El-Naggar,Sprint 4,Done,Protect routes and manage engineer sessions
+Story,View and update profile,,Auth & Profile,Ahmed El-Naggar,Sprint 4,Done,Engineer can view and edit profile information
+Story,Change password,,Auth & Profile,Ahmed El-Naggar,Sprint 5,Done,Engineer can change their password securely
+Task,Add show/hide password toggle,,Auth & Profile,Ahmed El-Naggar,Sprint 6,To Do,UI improvement on login and register
+Task,Auth test cases,,Auth & Profile,Ahmed El-Naggar,Sprint 6,To Do,Automated tests for login register and isolation
+Story,Create edit delete assessment,,Assessments & Media,Osama Al-Ghazali,Sprint 4,Done,Full CRUD for building damage assessments
+Story,Field inspection form,,Assessments & Media,Osama Al-Ghazali,Sprint 4,Done,Owner building damage type severity notes and GPS
+Story,Media upload images and video,,Assessments & Media,Osama Al-Ghazali,Sprint 4,Done,Attach and manage images and videos per assessment
+Story,Assessment history search and filter,,Assessments & Media,Osama Al-Ghazali,Sprint 5,Done,List filter and search past assessments
+Story,View assessment details,,Assessments & Media,Osama Al-Ghazali,Sprint 5,Done,Detailed assessment view with media gallery
+Task,Inline form validation messages,,Assessments & Media,Osama Al-Ghazali,Sprint 6,To Do,Client side validation feedback on the form
+Task,Assessment and media test cases,,Assessments & Media,Osama Al-Ghazali,Sprint 6,To Do,Automated tests for CRUD and uploads
+Story,Dashboard with statistics,,Reports & Dashboard,Mahmoud Irheem,Sprint 4,Done,Personal stats severity breakdown and recent activity
+Story,Automated assessment report,,Reports & Dashboard,Mahmoud Irheem,Sprint 5,Done,Structured report with print and save as PDF
+Story,Statistics API,,Reports & Dashboard,Mahmoud Irheem,Sprint 5,Done,Aggregated metrics endpoint for dashboard
+Task,Severity breakdown chart,,Reports & Dashboard,Mahmoud Irheem,Sprint 6,To Do,Visual chart of assessments by severity
+Task,Reports and stats test cases,,Reports & Dashboard,Mahmoud Irheem,Sprint 6,To Do,Automated tests for report and stats endpoints
+Story,Service worker and app-shell cache,,Offline & i18n,Kerim Abu Musameh,Sprint 4,Done,Cache the app so it loads offline
+Story,IndexedDB offline storage,,Offline & i18n,Kerim Abu Musameh,Sprint 5,Done,Store assessments and media on the device offline
+Story,Offline sync with server,,Offline & i18n,Kerim Abu Musameh,Sprint 5,Done,Idempotent sync of offline records on reconnect
+Story,Arabic RTL localization,,Offline & i18n,Kerim Abu Musameh,Sprint 5,Done,Bilingual UI with right-to-left support
+Story,PWA installability,,Offline & i18n,Kerim Abu Musameh,Sprint 6,Done,Manifest icons and installable on mobile
+Task,Add install app button,,Offline & i18n,Kerim Abu Musameh,Sprint 6,To Do,Prompt users to install the PWA
+Task,Sync and offline test cases,,Offline & i18n,Kerim Abu Musameh,Sprint 6,To Do,Automated tests for offline sync
