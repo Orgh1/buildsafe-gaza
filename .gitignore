@@ -4,3 +4,10 @@ data/
 .env
 .DS_Store
 npm-debug.log*
+
+# Internal team prep material — kept locally, not published in the repo
+docs/DISCUSSION_GUIDE_AR.md
+docs/QA.md
+docs/DEMO_SCRIPT.md
+docs/TEAM_TASKS.md
+docs/jira-import.csv
