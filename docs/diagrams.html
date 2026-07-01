@@ -242,15 +242,31 @@ sequenceDiagram
 
   <script src="./vendor/mermaid.min.js"></script>
   <script>
-    mermaid.initialize({
-      startOnLoad: true,
-      theme: 'base',
-      themeVariables: {
-        primaryColor: '#e6fffa', primaryBorderColor: '#0f766e', primaryTextColor: '#0f3d39',
-        lineColor: '#0f766e', fontFamily: 'system-ui, Segoe UI, sans-serif',
-      },
-      flowchart: { htmlLabels: true, curve: 'basis' },
-    });
+    (function () {
+      var cfg = {
+        startOnLoad: false, theme: 'base',
+        themeVariables: {
+          primaryColor: '#e6fffa', primaryBorderColor: '#0f766e', primaryTextColor: '#0f3d39',
+          lineColor: '#0f766e', fontFamily: 'system-ui, Segoe UI, sans-serif',
+        },
+        flowchart: { htmlLabels: true, curve: 'basis' },
+      };
+      // The vendored build registers under an internal namespace; the API is on .default.
+      var raw = (window.__esbuild_esm_mermaid_nm && window.__esbuild_esm_mermaid_nm.mermaid) || window.mermaid;
+      var m = raw && (typeof raw.initialize === 'function' ? raw : raw.default);
+      if (m && typeof m.initialize === 'function') {
+        m.initialize(cfg);
+        m.run();
+        return;
+      }
+      // Fallback: load Mermaid from CDN (needs internet).
+      var s = document.createElement('script');
+      s.type = 'module';
+      s.textContent =
+        "import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';" +
+        "mermaid.initialize(" + JSON.stringify(cfg) + "); mermaid.run();";
+      document.body.appendChild(s);
+    })();
   </script>
 </body>
 </html>
