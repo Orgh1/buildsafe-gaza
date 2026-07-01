@@ -13,97 +13,37 @@
   <meta name="mobile-web-app-capable" content="yes">
   <link rel="icon" href="/img/icon.svg" type="image/svg+xml">
   <link rel="stylesheet" id="bs-css" href="/vendor/bootstrap/bootstrap.min.css">
-  <script>
-    (function () {
-      try {
-        var ar = localStorage.getItem('bsg_lang') === 'ar';
-        var e = document.documentElement;
-        e.lang = ar ? 'ar' : 'en';
-        e.dir = ar ? 'rtl' : 'ltr';
-        if (ar) {
-          var l = document.getElementById('bs-css');
-          if (l) l.href = '/vendor/bootstrap/bootstrap.rtl.min.css';
-        }
-      } catch (_) {}
-    })();
-  </script>
+  <script>(function(){try{var ar=localStorage.getItem('bsg_lang')==='ar';var e=document.documentElement;e.lang=ar?'ar':'en';e.dir=ar?'rtl':'ltr';if(ar){var l=document.getElementById('bs-css');if(l)l.href='/vendor/bootstrap/bootstrap.rtl.min.css';}}catch(_){}})();</script>
   <link rel="stylesheet" href="/vendor/icons/bootstrap-icons.min.css">
   <link rel="stylesheet" href="/css/style.css">
 </head>
-
 <body>
   <div id="app-nav"></div>
-
   <div class="container" style="max-width:440px">
     <div class="card p-4 p-md-5 mt-5">
-
       <div class="text-center mb-4">
         <span class="brand-logo mx-auto mb-2" style="width:48px;height:48px;font-size:1.2rem">BS</span>
         <h3 class="text-bsg fw-bold mb-0">Welcome back</h3>
         <p class="text-muted small">Log in to access your assessments</p>
       </div>
-
       <div id="error" class="alert alert-danger d-none"></div>
-
       <form id="login-form">
-
         <div class="mb-3">
           <label class="form-label">Email</label>
-          <input
-            type="email"
-            class="form-control"
-            id="email"
-            required
-            autocomplete="email"
-            value="">
+          <input type="email" class="form-control" id="email" required autocomplete="email" value="">
         </div>
-
         <div class="mb-3">
           <label class="form-label">Password</label>
-
-          <div class="input-group">
-            <input
-              type="password"
-              class="form-control"
-              id="password"
-              required
-              autocomplete="current-password">
-
-            <button
-              type="button"
-              class="btn btn-outline-secondary"
-              id="toggle-password"
-              aria-label="Show password">
-              <i class="bi bi-eye"></i>
-            </button>
-          </div>
+          <input type="password" class="form-control" id="password" required autocomplete="current-password">
         </div>
-
-        <button
-          type="submit"
-          class="btn btn-bsg w-100"
-          id="submit-btn">
-          Log in
-        </button>
-
+        <button type="submit" class="btn btn-bsg w-100" id="submit-btn">Log in</button>
       </form>
-
-      <p class="text-center text-muted small mt-3 mb-0">
-        No account?
-        <a href="/register.html" class="text-bsg">Register</a>
-      </p>
-
+      <p class="text-center text-muted small mt-3 mb-0">No account? <a href="/register.html" class="text-bsg">Register</a></p>
       <div class="alert alert-light border mt-3 small mb-0">
         <strong>Demo accounts</strong><br>
-        Engineer:
-        <code>osama@buildsafe.ps</code> /
-        <code>Engineer@123</code><br>
-
-        Admin:
-        <code>admin@buildsafe.ps</code> /
-        <code>Admin@123</code>
+        Engineer: <code>osama@buildsafe.ps</code> / <code>Engineer@123</code><br>
+        Admin: <code>admin@buildsafe.ps</code> / <code>Admin@123</code>
       </div>
-
     </div>
   </div>
 
@@ -114,66 +54,32 @@
   <script src="/js/idb.js"></script>
   <script src="/js/ui.js"></script>
   <script src="/js/sync.js"></script>
-
   <script>
     (async () => {
-
       await BSG.ui.loadUser();
       BSG.ui.renderNav('login');
       BSG.ui.registerSW();
-
       const params = new URLSearchParams(location.search);
       const next = params.get('next') || '/dashboard.html';
-
       const form = document.getElementById('login-form');
       const err = document.getElementById('error');
       const btn = document.getElementById('submit-btn');
-
-      const passwordInput = document.getElementById('password');
-      const togglePassword = document.getElementById('toggle-password');
-
-      togglePassword.addEventListener('click', () => {
-        if (passwordInput.type === 'password') {
-          passwordInput.type = 'text';
-          togglePassword.innerHTML = '<i class="bi bi-eye-slash"></i>';
-          togglePassword.setAttribute('aria-label', 'Hide password');
-        } else {
-          passwordInput.type = 'password';
-          togglePassword.innerHTML = '<i class="bi bi-eye"></i>';
-          togglePassword.setAttribute('aria-label', 'Show password');
-        }
-      });
-
       form.addEventListener('submit', async (e) => {
         e.preventDefault();
-
         err.classList.add('d-none');
-
-        btn.disabled = true;
-        btn.textContent = BSG.i18n.t('Logging in…');
-
+        btn.disabled = true; btn.textContent = BSG.i18n.t('Logging in…');
         try {
-
           await BSG.api.post('/api/auth/login', {
             email: document.getElementById('email').value.trim(),
-            password: passwordInput.value,
+            password: document.getElementById('password').value,
           });
-
           location.href = next;
-
         } catch (ex) {
-
-          err.textContent = ex.message;
-          err.classList.remove('d-none');
-
-          btn.disabled = false;
-          btn.textContent = BSG.i18n.t('Log in');
+          err.textContent = ex.message; err.classList.remove('d-none');
+          btn.disabled = false; btn.textContent = BSG.i18n.t('Log in');
         }
-
       });
-
     })();
   </script>
-
 </body>
 </html>
