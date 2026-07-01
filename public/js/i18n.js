@@ -142,9 +142,9 @@ window.BSG.i18n = (function () {
     // ---- Enums (display only; stored values stay English) ----
     'Residential': 'سكني', 'Commercial': 'تجاري', 'Industrial': 'صناعي',
     'Public': 'مرفق عام', 'Mixed-use': 'متعدد الاستخدام', 'Other': 'أخرى',
-    'Structural': 'إنشائي', 'Partial collapse': 'انهيار جزئي', 'Cracks': 'تشققات',
-    'Fire': 'حريق', 'Water': 'مياه', 'Facade': 'واجهة',
-    'Minor': 'طفيف', 'Moderate': 'متوسط', 'Severe': 'بالغ', 'Critical': 'حرِج',
+    'Structural': 'إنشائي', 'Partial collapse': 'انهيار جزئي', 'Cracks': 'تصدعات',
+    'Fire': 'حريق', 'Water': 'مياه', 'Facade': 'أضرار واجهة',
+    'Minor': 'بسيط', 'Moderate': 'متوسط', 'Severe': 'جسيم', 'Critical': 'شديد الخطورة',
     'Habitable': 'صالح للسكن', 'Conditional': 'مشروط', 'Uninhabitable': 'غير صالح للسكن',
     'submitted': 'مُرسَل', 'draft': 'مسودة', 'reviewed': 'تمت المراجعة',
     'engineer': 'مهندس', 'admin': 'مدير', 'online': 'عبر الإنترنت', 'offline-sync': 'مزامنة دون اتصال',
