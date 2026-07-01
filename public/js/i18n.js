@@ -20,6 +20,7 @@ window.BSG.i18n = (function () {
     'Online': 'متصل',
     'Offline': 'غير متصل',
     'pending': 'بانتظار المزامنة',
+    'Install App': 'تثبيت التطبيق',
 
     // ---- Landing ----
     'Building Damage Assessment Platform': 'منصة تقييم أضرار المباني',

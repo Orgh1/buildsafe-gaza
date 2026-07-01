@@ -76,11 +76,11 @@ git push origin <your-branch>
 `public/js/sync.js`, `public/js/i18n.js`, offline auth in `public/js/ui.js`
 
 **Tasks:**
-- [ ] Review all Arabic translations for accuracy.
-- [ ] Add an "Install app" button (using `beforeinstallprompt`).
-- [ ] Add a test for the offline/sync logic in `tests/`.
-- [ ] Improve the Online/Offline indicator UX.
-- [ ] Write the **Offline / PWA / i18n** section of the project report.
+- [x] Review all Arabic translations for accuracy.
+- [x] Add an "Install app" button (using `beforeinstallprompt`).
+- [x] Add a test for the offline/sync logic in `tests/`.
+- [x] Improve the Online/Offline indicator UX.
+- [x] Write the **Offline / PWA / i18n** section of the project report.
 
 ---
 

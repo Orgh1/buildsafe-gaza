@@ -158,6 +158,11 @@ test('TC6 — Offline Data Collection: sync creates records idempotently', async
   const second = await c.post('/api/sync', { assessments: [{ client_uuid: 'offline-abc', building_location: 'Offline Site UPDATED', severity: 'Critical' }] });
   assert.equal(second.data.results[0].status, 'updated');
 
+  // Test empty payload sync
+  const emptySync = await c.post('/api/sync', { assessments: [] });
+  assert.equal(emptySync.status, 200);
+  assert.equal(emptySync.data.synced, 0);
+
   const list = await c.get('/api/assessments');
   assert.equal(list.data.count, 1); // still one record, not two
   assert.equal(list.data.assessments[0].building_location, 'Offline Site UPDATED');

@@ -142,9 +142,11 @@ window.BSG.ui = (function () {
     let pending = 0;
     try { pending = await BSG.idb.countPending(); } catch (_) {}
     const T = (s) => (window.BSG.i18n ? BSG.i18n.t(s) : s);
-    const dot = online ? `<span class="dot dot-online"></span>${T('Online')}` : `<span class="dot dot-offline"></span>${T('Offline')}`;
+    const dot = online 
+      ? `<i class="bi bi-wifi text-success"></i> ${T('Online')}` 
+      : `<i class="bi bi-wifi-off text-danger"></i> ${T('Offline')}`;
     const badge = pending > 0 ? ` <span class="badge bg-warning text-dark pending-badge">${pending} ${T('pending')}</span>` : '';
-    el.innerHTML = `<span id="net-indicator-inner">${dot}${badge}</span>`;
+    el.innerHTML = `<span id="net-indicator-inner" class="fw-semibold">${dot}${badge}</span>`;
   }
 
   function initConnectivity() {
@@ -161,10 +163,42 @@ window.BSG.ui = (function () {
     window.addEventListener('offline', () => { toast(T('You are offline — data will be saved on this device.'), 'warning'); updateNetIndicator(); });
   }
 
+  let deferredPrompt;
+
   function registerSW() {
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker.register('/sw.js').catch((e) => console.warn('SW registration failed', e));
+      
+      window.addEventListener('beforeinstallprompt', (e) => {
+        e.preventDefault();
+        deferredPrompt = e;
+        showInstallButton();
+      });
     }
+  }
+
+  function showInstallButton() {
+    // wait for nav to be rendered
+    setTimeout(() => {
+      const nav = document.getElementById('navmenu');
+      if (nav && !document.getElementById('install-btn')) {
+        const btn = document.createElement('button');
+        btn.id = 'install-btn';
+        btn.className = 'btn btn-sm btn-outline-warning ms-2 fw-bold';
+        btn.innerHTML = `<i class="bi bi-download"></i> ${window.BSG.i18n ? BSG.i18n.t('Install App') : 'Install App'}`;
+        btn.onclick = async () => {
+          if (!deferredPrompt) return;
+          deferredPrompt.prompt();
+          const { outcome } = await deferredPrompt.userChoice;
+          if (outcome === 'accepted') {
+            btn.remove();
+          }
+          deferredPrompt = null;
+        };
+        const rightSide = nav.querySelector('.d-flex.align-items-center.gap-3');
+        if (rightSide) rightSide.prepend(btn);
+      }
+    }, 500);
   }
 
   return {
