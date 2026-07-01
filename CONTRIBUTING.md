@@ -13,7 +13,7 @@ shows clearly through their own commits.
 | **1. Auth & Profile** | Ahmed El-Naggar | `src/routes/auth.js`, `src/routes/profile.js`, `src/middleware/auth.js`, `public/login.html`, `public/register.html`, `public/profile.html`, `public/js/profile.js` |
 | **2. Assessments & Media** | Osama Al-Ghazali | `src/routes/assessments.js`, `src/routes/media.js`, `src/services/assessments.js`, `src/services/media.js`, `public/assessment.html`, `public/view.html`, `public/history.html`, `public/js/{assessment,view,history}.js` |
 | **3. Reports, Dashboard & Stats** | Mahmoud Fahmi Irheem | `src/routes/reports.js`, `src/routes/stats.js`, `src/services/report.js`, `public/report.html`, `public/dashboard.html`, `public/js/{report,dashboard}.js` |
-| **4. Offline / PWA / i18n / Sync** | Kerim Abu Musameh | `public/sw.js`, `public/manifest.webmanifest`, `public/js/{idb,sync,i18n}.js`, offline auth in `public/js/ui.js` |
+| **4. Offline / PWA / i18n / Sync** | Kereem Abu Musameh | `public/sw.js`, `public/manifest.webmanifest`, `public/js/{idb,sync,i18n}.js`, offline auth in `public/js/ui.js` |
 | **Cross-cutting: Testing & Docs** | Yasser Awda (+ all) | `tests/`, `docs/`, `README.md`, Jira board upkeep |
 
 > The code already exists — each owner **improves, tests, documents, and maintains** their
